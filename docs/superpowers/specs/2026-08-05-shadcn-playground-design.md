@@ -81,11 +81,20 @@ export default function ButtonExample() {
 
 `registry:component` 타입의 `example` 항목이 `Example` / `ExampleWrapper`를 제공한다. 자체 섹션 래퍼를 만들 필요가 없다. `ExampleWrapper`는 `min-h-screen` + 자체 그리드 + `bg-muted` 배경을 가진 **전체 페이지 전제**의 컨테이너다.
 
-### 알려진 걸림돌: `icon-placeholder`
+### `icon-placeholder` — 해소됨
 
-예제들이 `@/app/(create)/components/icon-placeholder`를 import하는데, 이 항목은 레지스트리에 없다 (404). shadcn 사이트 내부 파일이다.
+레지스트리 원본은 `@/app/(create)/components/icon-placeholder`를 import하지만, **CLI가 설치 시 실제 lucide 아이콘으로 치환한다.** shim은 필요 없다. 0회차에서 실측 확인했다.
 
-**대응**: 우리 앱의 동일 경로 `app/(create)/components/icon-placeholder.tsx`에 같은 시그니처의 shim을 만든다. 그러면 설치된 예제 소스를 한 줄도 고치지 않고 그대로 쓸 수 있다. `(create)`는 라우트 그룹이라 URL에 영향을 주지 않는다.
+### 설치 경로 — 확정됨
+
+CLI 기본값을 그대로 쓴다. 상세는 `docs/superpowers/notes/2026-08-05-registry-inventory.md` 참조.
+
+```
+components/ui/<name>.tsx        registry:ui        원본, 수정 금지, 부모 레포 공유 대상
+components/<name>-example.tsx   registry:example   공식 예제, 수정 금지
+components/example.tsx          registry:component Example / ExampleWrapper
+components/playground/          이 레포 전용 코드
+```
 
 ## 페이지 구조
 
@@ -97,19 +106,18 @@ export default function ButtonExample() {
 app/
   layout.tsx                          ThemeProvider(next-themes) + 폰트
   page.tsx                            /playground/tokens 로 리다이렉트
-  (create)/components/
-    icon-placeholder.tsx              공식 예제용 shim
   playground/
     layout.tsx                        Sidebar 셸
     <category>/page.tsx               카테고리별 예제 페이지
     showcase/<name>/page.tsx          페이지 점유형 블록 예제 (sidebar-07 등)
 components/
   ui/                                 shadcn 원본. 수정 금지. 부모 레포가 가져갈 대상
+  <name>-example.tsx                  공식 예제. CLI가 넣어줌. 수정 금지
+  example.tsx                         공식 Example / ExampleWrapper
   playground/
-    examples/                         공식 예제 소스. CLI가 넣어줌. 수정 금지
-    example.tsx                       공식 Example / ExampleWrapper
     gallery-sidebar.tsx               카테고리 메타로 네비 생성
     theme-toggle.tsx
+    theme-provider.tsx
     categories.ts                     카테고리 메타 배열
 lib/utils.ts
 ```
@@ -157,38 +165,44 @@ export const categories: Category[] = [ /* ... */ ]
 
 | 항목 | 문제 | 처리 |
 |---|---|---|
-| Direction | RTL 컴포넌트 | 제외 |
+| Direction | RTL 컴포넌트 | 제외. `init --no-rtl`로 config 레벨에서도 반영됨 |
+| Form | `form-example`이 존재하지 않음 | 제외. Base UI에서는 `field`가 폼 레이아웃을 담당하므로 `field-example`로 대체 |
 | Sidebar 블록 예제 | 페이지 전체 점유, 중첩 Provider | `playground/showcase/sidebar-*` 전용 라우트 |
-| Data Table | tanstack-table 의존, 예제 코드가 김 | 전용 라우트 |
-| Chart | recharts 의존 | 전용 라우트 |
-| Toast | 문서상 deprecated, Sonner 권장 | 0회차에 `base-*` 레지스트리의 실제 항목명 확인 후 확정 |
-| Typography | 컴포넌트가 아니라 스타일 가이드 | 예제 항목이 없으면 수동 작성 |
+| Chart | recharts 의존 | 전용 회차 (12회차) |
+| Toast | ~~deprecated, Sonner 권장~~ **정정**: Base UI 프로젝트는 `toast`가 정답이고 Sonner는 Radix / Aria용이다 | 둘 다 전시하되 `toast`를 권장으로 표기 |
+| Data Table | UI 항목도 example도 없음 (Table + TanStack 조합 문서일 뿐) | 계획에서 제외 |
+| Date Picker | UI 항목도 example도 없음 (Calendar + Popover 조합 문서) | 제외. `calendar-example`이 커버 |
+| Typography | 컴포넌트가 아니라 스타일 가이드 | Theme Tokens 페이지에 수동 작성 |
 
 ## 회차 계획
 
-| 회차 | 라우트 | 대상 |
-|---|---|---|
-| 0 | — | Next.js init, `--preset bIkeymG`, `style: base-*` 확정, ThemeProvider, `example` + `sidebar` 설치, Sidebar 셸, `icon-placeholder` shim |
-| 1 | `/playground/tokens` | Theme Tokens 패널, Typography |
-| 2 | `/playground/form` | button, button-group, input, label, textarea, native-select, select, checkbox, radio-group, switch, toggle, toggle-group |
-| 3 | `/playground/form-advanced` | field, input-group, input-otp, combobox, calendar, date-picker, slider |
-| 4 | `/playground/data-display` | card, table, badge, avatar, separator, skeleton, item, empty, kbd, spinner, progress, aspect-ratio |
-| 5 | `/playground/overlay` | dialog, alert-dialog, sheet, drawer, popover, tooltip, hover-card |
-| 6 | `/playground/menu` | dropdown-menu, context-menu, menubar, command |
-| 7 | `/playground/navigation` | tabs, accordion, collapsible, breadcrumb, navigation-menu, pagination |
-| 8 | `/playground/feedback` | alert, sonner |
-| 9 | `/playground/layout` | scroll-area, resizable, carousel |
-| 10 | `/playground/ai` | attachment, bubble, message, message-scroller, marker |
-| 11 | `/playground/sidebar` | sidebar 블록 예제 + showcase 라우트 |
-| 12 | `/playground/heavy` | data-table, chart + showcase 라우트 |
+레지스트리 실측(0회차)으로 확정된 배정이다. 예제 63개.
 
-카테고리별 컴포넌트 배정은 `base-*` 레지스트리의 실제 항목 목록을 확인하면서 조정될 수 있다.
+| 회차 | 라우트 | 예제 | 개수 |
+|---|---|---|---|
+| 0 | — | Next.js init, `--preset bIkeymG --base base --no-rtl`, ThemeProvider, Sidebar 셸 | — |
+| 1 | `/playground/tokens` | (수동) 색 토큰, Typography | — |
+| 2 | `/playground/form` | button, button-group, input, label, textarea, native-select, select, checkbox, radio-group, switch, toggle, toggle-group | 12 |
+| 3 | `/playground/form-advanced` | field, input-group, input-otp, combobox, calendar, slider | 6 |
+| 4 | `/playground/data-display` | card, table, badge, avatar, separator, skeleton, item, empty, kbd, spinner, progress, aspect-ratio | 12 |
+| 5 | `/playground/overlay` | dialog, alert-dialog, sheet, drawer, popover, tooltip, hover-card | 7 |
+| 6 | `/playground/menu` | dropdown-menu, context-menu, menubar, command | 4 |
+| 7 | `/playground/navigation` | tabs, accordion, collapsible, breadcrumb, navigation-menu, pagination | 6 |
+| 8 | `/playground/feedback` | alert, toast, sonner | 3 |
+| 9 | `/playground/layout` | scroll-area, resizable, carousel | 3 |
+| 10 | `/playground/chat` | attachment, bubble, message, message-scroller, marker | 5 |
+| 11 | `/playground/sidebar` | sidebar, sidebar-icon, sidebar-inset, sidebar-floating + 블록 16개 showcase | 4 |
+| 12 | `/playground/chart` | chart | 1 |
 
-## 0회차에서 확정할 미결 사항
+`component-example` 1개는 성격 미확인 상태로, 내용 확인 후 배정한다.
 
-1. **`bIkeymG` preset이 지정하는 style 값.** `base-*` 중 하나가 아니면 `base-*`로 맞춘다. preset은 로컬 실행 전에는 조회가 불가능하다 (공개 조회 엔드포인트 없음).
-2. **`registry:example` / `registry:component` 파일의 설치 경로.** CLI가 예제 파일(`button-example`)과 갤러리 프리미티브(`example`)를 어느 디렉터리에 떨구는지 실제로 하나 설치해서 확인한다. 위 디렉터리 구조와 다르면 `components.json`의 alias로 조정하거나, 구조를 CLI 기본값에 맞춘다. 어느 쪽이든 `components/ui/`가 shadcn 원본만 담는다는 경계는 유지한다.
-3. **`base-*` 레지스트리의 전체 항목 목록.** MCP `list_items_in_registries`로 열거해서 회차 계획의 컴포넌트 배정을 확정한다. Toast / Sonner, Typography의 실제 항목명 포함.
+## 0회차 미결 사항 — 전부 해소됨
+
+조사 결과는 `docs/superpowers/notes/2026-08-05-registry-inventory.md`에 있다.
+
+1. **preset이 지정하는 style** → `vega`. preset은 base를 인코딩하지 않으므로 `--base base`를 명시해 `base-vega`로 확정했다.
+2. **설치 경로** → CLI 기본값 채택. `components/ui/`(원본), `components/*-example.tsx`(예제), `components/playground/`(전용 코드).
+3. **레지스트리 전체 목록** → ui 62 / example 64 / block 30 / component 1. 회차 계획에 반영 완료.
 
 ## 범위 밖
 
