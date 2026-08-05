@@ -1,4 +1,4 @@
-import { PaletteIcon, type LucideIcon } from "lucide-react"
+import { PaletteIcon, SquarePenIcon, type LucideIcon } from "lucide-react"
 
 /**
  * 갤러리 네비게이션의 단일 소스.
@@ -24,6 +24,25 @@ export const categories: Category[] = [
     items: [
       { name: "colors", title: "Colors" },
       { name: "typography", title: "Typography" },
+    ],
+  },
+  {
+    slug: "form",
+    title: "Form",
+    icon: SquarePenIcon,
+    items: [
+      { name: "button", title: "Button" },
+      { name: "button-group", title: "Button Group" },
+      { name: "input", title: "Input" },
+      { name: "label", title: "Label" },
+      { name: "textarea", title: "Textarea" },
+      { name: "native-select", title: "Native Select" },
+      { name: "select", title: "Select" },
+      { name: "checkbox", title: "Checkbox" },
+      { name: "radio-group", title: "Radio Group" },
+      { name: "switch", title: "Switch" },
+      { name: "toggle", title: "Toggle" },
+      { name: "toggle-group", title: "Toggle Group" },
     ],
   },
 ]
