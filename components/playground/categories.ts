@@ -1,4 +1,4 @@
-import { BellIcon, CompassIcon, LayoutGridIcon, LayersIcon, ListChecksIcon, MenuIcon, PaletteIcon, SquarePenIcon, TableIcon, type LucideIcon } from "lucide-react"
+import { BellIcon, CompassIcon, LayoutGridIcon, LayersIcon, ListChecksIcon, MenuIcon, MessageCircleIcon, PaletteIcon, SquarePenIcon, TableIcon, type LucideIcon } from "lucide-react"
 
 /**
  * 갤러리 네비게이션의 단일 소스.
@@ -133,6 +133,16 @@ export const categories: Category[] = [
       { name: "scroll-area", title: "Scroll Area" },
       { name: "resizable", title: "Resizable" },
       { name: "carousel", title: "Carousel" },
+    ],
+  },
+  {
+    slug: "chat",
+    title: "Chat",
+    icon: MessageCircleIcon,
+    items: [
+      { name: "attachment", title: "Attachment" },
+      { name: "bubble", title: "Bubble" },
+      { name: "marker", title: "Marker" },
     ],
   },
 ]
