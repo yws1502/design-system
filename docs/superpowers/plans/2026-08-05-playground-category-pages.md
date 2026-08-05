@@ -692,10 +692,10 @@ cd /Users/woosang/Desktop/workspace/design-system && pnpm build && git add -A &&
 
 ## 전체 완료 기준
 
-- [ ] `pnpm build`가 통과한다
-- [ ] 라우트 12개가 존재한다: `/playground/{tokens,form,form-advanced,data-display,overlay,menu,navigation,feedback,layout-components,chat,sidebar,chart}`
-- [ ] showcase 라우트 4개가 존재한다: `/showcase/{sidebar,sidebar-icon,sidebar-inset,sidebar-floating}`
-- [ ] 61개 예제 중 sidebar 4개를 제외한 57개가 카테고리 페이지에 배치되어 있다 (sidebar 4개는 showcase 라우트에)
-- [ ] `components/ui/**`와 `components/*-example.tsx`에 변경이 없다
-- [ ] 모든 `Section`의 `id`가 대응하는 `categories.ts` 항목의 `items[].name`과 일치한다
-- [ ] 사이드바에서 각 카테고리로 이동할 수 있고, light / dark 양쪽에서 정상으로 보인다
+- [x] `pnpm build`가 통과한다
+- [x] 라우트 12개가 존재한다: `/playground/{tokens,form,form-advanced,data-display,overlay,menu,navigation,feedback,layout-components,chat,sidebar,chart}`
+- [x] showcase 라우트 4개가 존재한다: `/showcase/{sidebar,sidebar-icon,sidebar-inset,sidebar-floating}`
+- [x] 61개 예제 중 sidebar 4개를 제외한 57개가 카테고리 페이지에 배치되어 있다 (sidebar 4개는 showcase 라우트에)
+- [x] `components/ui/**`와 `components/*-example.tsx`에 변경이 없다
+- [x] 모든 `Section`의 `id`가 대응하는 `categories.ts` 항목의 `items[].name`과 일치한다
+- [x] 사이드바에서 각 카테고리로 이동할 수 있고, light / dark 양쪽에서 정상으로 보인다

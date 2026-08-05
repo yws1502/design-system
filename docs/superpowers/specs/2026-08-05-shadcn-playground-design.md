@@ -204,6 +204,21 @@ export const categories: Category[] = [ /* ... */ ]
 2. **설치 경로** → CLI 기본값 채택. `components/ui/`(원본), `components/*-example.tsx`(예제), `components/playground/`(전용 코드).
 3. **레지스트리 전체 목록** → ui 62 / example 64 / block 30 / component 1. 회차 계획에 반영 완료.
 
+## 구현 결과 (2026-08-05 완료)
+
+라우트 16개가 모두 동작한다. 카테고리 12개(`/playground/*`)와 showcase 4개(`/showcase/sidebar*`).
+
+예제 61개 중 57개가 카테고리 페이지에, 4개(sidebar 계열)가 showcase 라우트에 배치됐다. 누락 0건.
+
+계획과 달라진 점:
+
+- **`message-example` / `message-scroller-example` 제외.** shadcn 사이트 내부 모듈(`@/lib/ai`, `@/components/message-parts`)에 의존해 컴파일이 불가능하다. 레지스트리에 없는 코드를 우리가 추측해 shim으로 채우면 그건 공식 예제가 아니라 우리 근사치가 되므로 제외를 택했다. `Message` / `MessageScroller` 컴포넌트 소스 자체는 `components/ui/`에 있으므로 부모 레포 공유에는 영향이 없다.
+- **Layout 카테고리의 라우트 세그먼트는 `layout-components`.** `app/playground/layout/`은 Next.js의 `layout.tsx` 규약과 혼동을 부른다. 표시 제목은 `Layout` 그대로다.
+- **`next.config.ts`에 `images.remotePatterns` 추가.** 공식 예제가 `avatar.vercel.sh`와 `images.unsplash.com`을 `next/image`로 로드하는데 호스트가 등록되지 않아 두 라우트가 런타임 500을 냈다. `next build`는 렌더링을 하지 않으므로 이 결함을 잡지 못한다 — 회차마다 실제로 페이지를 열어봐야 한다는 뜻이다. 예제 무수정 원칙에 따라 config로 해결했다.
+- **`Section`에 `description?: string` 추가.** Feedback 페이지에서 Toast를 권장으로, Sonner를 Radix / React Aria용으로 표기하기 위해서다.
+
+`components/ui/**`와 `components/*-example.tsx`는 전 구간에 걸쳐 변경 0건이다. 부모 레포 공유 계약이 지켜졌다.
+
 ## 범위 밖
 
 - 스크린샷 회귀 테스트 — 카테고리가 충분히 쌓인 뒤 필요하면 추가한다.
