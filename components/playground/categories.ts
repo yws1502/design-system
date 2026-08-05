@@ -1,4 +1,4 @@
-import { LayersIcon, ListChecksIcon, MenuIcon, PaletteIcon, SquarePenIcon, TableIcon, type LucideIcon } from "lucide-react"
+import { CompassIcon, LayersIcon, ListChecksIcon, MenuIcon, PaletteIcon, SquarePenIcon, TableIcon, type LucideIcon } from "lucide-react"
 
 /**
  * 갤러리 네비게이션의 단일 소스.
@@ -100,6 +100,19 @@ export const categories: Category[] = [
       { name: "context-menu", title: "Context Menu" },
       { name: "menubar", title: "Menubar" },
       { name: "command", title: "Command" },
+    ],
+  },
+  {
+    slug: "navigation",
+    title: "Navigation",
+    icon: CompassIcon,
+    items: [
+      { name: "tabs", title: "Tabs" },
+      { name: "accordion", title: "Accordion" },
+      { name: "collapsible", title: "Collapsible" },
+      { name: "breadcrumb", title: "Breadcrumb" },
+      { name: "navigation-menu", title: "Navigation Menu" },
+      { name: "pagination", title: "Pagination" },
     ],
   },
 ]
