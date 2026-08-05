@@ -44,11 +44,16 @@ export default function SidebarPage() {
           {SHOWCASES.map((showcase) => (
             <Card
               key={showcase.href}
-              className="transition-colors hover:bg-accent"
+              className="relative transition-colors hover:bg-accent"
             >
               <CardHeader>
                 <CardTitle>
-                  <Link href={showcase.href} className="flex items-center gap-2">
+                  <Link
+                    href={showcase.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 after:absolute after:inset-0"
+                  >
                     {showcase.title}
                     <ExternalLinkIcon className="size-4" />
                   </Link>

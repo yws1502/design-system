@@ -1,4 +1,18 @@
-import { BellIcon, ChartColumnIcon, CompassIcon, LayoutGridIcon, LayersIcon, ListChecksIcon, MenuIcon, MessageCircleIcon, PaletteIcon, PanelLeftIcon, SquarePenIcon, TableIcon, type LucideIcon } from "lucide-react"
+import {
+  BellIcon,
+  ChartColumnIcon,
+  CompassIcon,
+  LayersIcon,
+  LayoutGridIcon,
+  ListChecksIcon,
+  MenuIcon,
+  MessageCircleIcon,
+  PaletteIcon,
+  PanelLeftIcon,
+  SquarePenIcon,
+  TableIcon,
+  type LucideIcon,
+} from "lucide-react"
 
 /**
  * 갤러리 네비게이션의 단일 소스.
