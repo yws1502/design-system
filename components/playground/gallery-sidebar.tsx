@@ -4,7 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 import { categories } from "@/components/playground/categories"
-import { ThemeToggle } from "@/components/playground/theme-toggle"
+import { SidebarUser } from "@/components/playground/sidebar-user"
 import {
   Sidebar,
   SidebarContent,
@@ -75,9 +75,7 @@ export function GallerySidebar() {
       </SidebarContent>
 
       <SidebarFooter>
-        <div className="flex justify-end group-data-[collapsible=icon]:justify-center">
-          <ThemeToggle />
-        </div>
+        <SidebarUser />
       </SidebarFooter>
 
       <SidebarRail />
