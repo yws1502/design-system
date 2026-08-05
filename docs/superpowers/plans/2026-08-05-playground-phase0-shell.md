@@ -721,16 +721,27 @@ cd /Users/woosang/Desktop/workspace/design-system && git add -A && git commit -m
 
 ---
 
+## 실행 결과 (2026-08-05)
+
+0회차 완료. 계획 대비 달라진 점:
+
+- **Task 4(`icon-placeholder` shim) 폐기.** CLI가 설치 시 실제 lucide 아이콘으로 치환한다. shim이 필요 없다.
+- **Task 1에 정리 작업 추가.** `shadcn mcp init`이 앞서 npm으로 만든 `package.json` / `package-lock.json` / `node_modules`를 제거하고 pnpm으로 재스캐폴딩했다. `create-next-app`이 `.agents` / `.mcp.json` / `skills-lock.json`을 충돌로 판단하므로 임시 이동 후 복원했다.
+- **Task 2가 첫 시도에 성공.** `--base base --no-rtl`를 명시해 `style: base-vega`, `rtl: false`를 얻었다. 수동 수정 없음.
+- **설치 경로가 스펙과 다름.** 예제는 `components/playground/examples/`가 아니라 `components/*-example.tsx`에 떨어진다. CLI 기본값을 채택했다.
+- **Task 6에 `TooltipProvider` 추가.** `SidebarMenuButton`의 `tooltip` prop이 Tooltip에 의존하므로 레이아웃에 Provider가 필요하다. Base UI이므로 `asChild`가 아니라 `render` prop을 쓴다.
+- **검증 방법.** `playwright-core`를 스크래치패드에 설치하고 시스템에 캐시된 Chrome으로 스크린샷을 찍었다. 프로젝트 의존성은 건드리지 않았다.
+
 ## 0회차 완료 기준
 
-- [ ] `pnpm build`가 통과한다
-- [ ] `components.json`의 `style`이 `base-*`이고 `iconLibrary`가 `lucide`다
-- [ ] `/`가 `/playground/tokens`로 리다이렉트된다
-- [ ] 사이드바가 `SidebarTrigger`와 `cmd+b`로 아이콘 모드 접힘/펼침이 동작한다
-- [ ] light / dark 전환이 동작하고 양쪽에서 토큰 페이지가 정상으로 보인다
-- [ ] `docs/superpowers/notes/2026-08-05-registry-inventory.md`에 레지스트리 전체 목록과 설치 경로 규칙이 기록되어 있다
-- [ ] 스펙의 "0회차에서 확정할 미결 사항" 3개가 해소되어 있다
-- [ ] 모든 변경이 커밋되어 있다
+- [x] `pnpm build`가 통과한다
+- [x] `components.json`의 `style`이 `base-*`이고 `iconLibrary`가 `lucide`다
+- [x] `/`가 `/playground/tokens`로 리다이렉트된다
+- [x] 사이드바가 `SidebarTrigger`와 `cmd+b`로 아이콘 모드 접힘/펼침이 동작한다
+- [x] light / dark 전환이 동작하고 양쪽에서 토큰 페이지가 정상으로 보인다
+- [x] `docs/superpowers/notes/2026-08-05-registry-inventory.md`에 레지스트리 전체 목록과 설치 경로 규칙이 기록되어 있다
+- [x] 스펙의 "0회차에서 확정할 미결 사항" 3개가 해소되어 있다
+- [x] 모든 변경이 커밋되어 있다
 
 ## 다음 회차
 
