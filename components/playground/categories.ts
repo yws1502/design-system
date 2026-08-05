@@ -1,4 +1,4 @@
-import { LayersIcon, ListChecksIcon, PaletteIcon, SquarePenIcon, TableIcon, type LucideIcon } from "lucide-react"
+import { LayersIcon, ListChecksIcon, MenuIcon, PaletteIcon, SquarePenIcon, TableIcon, type LucideIcon } from "lucide-react"
 
 /**
  * 갤러리 네비게이션의 단일 소스.
@@ -89,6 +89,17 @@ export const categories: Category[] = [
       { name: "popover", title: "Popover" },
       { name: "tooltip", title: "Tooltip" },
       { name: "hover-card", title: "Hover Card" },
+    ],
+  },
+  {
+    slug: "menu",
+    title: "Menu",
+    icon: MenuIcon,
+    items: [
+      { name: "dropdown-menu", title: "Dropdown Menu" },
+      { name: "context-menu", title: "Context Menu" },
+      { name: "menubar", title: "Menubar" },
+      { name: "command", title: "Command" },
     ],
   },
 ]
