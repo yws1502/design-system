@@ -1,4 +1,4 @@
-import { CompassIcon, LayersIcon, ListChecksIcon, MenuIcon, PaletteIcon, SquarePenIcon, TableIcon, type LucideIcon } from "lucide-react"
+import { BellIcon, CompassIcon, LayoutGridIcon, LayersIcon, ListChecksIcon, MenuIcon, PaletteIcon, SquarePenIcon, TableIcon, type LucideIcon } from "lucide-react"
 
 /**
  * 갤러리 네비게이션의 단일 소스.
@@ -113,6 +113,26 @@ export const categories: Category[] = [
       { name: "breadcrumb", title: "Breadcrumb" },
       { name: "navigation-menu", title: "Navigation Menu" },
       { name: "pagination", title: "Pagination" },
+    ],
+  },
+  {
+    slug: "feedback",
+    title: "Feedback",
+    icon: BellIcon,
+    items: [
+      { name: "alert", title: "Alert" },
+      { name: "toast", title: "Toast" },
+      { name: "sonner", title: "Sonner" },
+    ],
+  },
+  {
+    slug: "layout-components",
+    title: "Layout",
+    icon: LayoutGridIcon,
+    items: [
+      { name: "scroll-area", title: "Scroll Area" },
+      { name: "resizable", title: "Resizable" },
+      { name: "carousel", title: "Carousel" },
     ],
   },
 ]
