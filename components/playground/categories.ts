@@ -1,4 +1,4 @@
-import { PaletteIcon, SquarePenIcon, type LucideIcon } from "lucide-react"
+import { ListChecksIcon, PaletteIcon, SquarePenIcon, type LucideIcon } from "lucide-react"
 
 /**
  * 갤러리 네비게이션의 단일 소스.
@@ -43,6 +43,19 @@ export const categories: Category[] = [
       { name: "switch", title: "Switch" },
       { name: "toggle", title: "Toggle" },
       { name: "toggle-group", title: "Toggle Group" },
+    ],
+  },
+  {
+    slug: "form-advanced",
+    title: "Form Advanced",
+    icon: ListChecksIcon,
+    items: [
+      { name: "field", title: "Field" },
+      { name: "input-group", title: "Input Group" },
+      { name: "input-otp", title: "Input OTP" },
+      { name: "combobox", title: "Combobox" },
+      { name: "calendar", title: "Calendar" },
+      { name: "slider", title: "Slider" },
     ],
   },
 ]
