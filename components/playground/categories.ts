@@ -1,4 +1,4 @@
-import { ListChecksIcon, PaletteIcon, SquarePenIcon, type LucideIcon } from "lucide-react"
+import { ListChecksIcon, PaletteIcon, SquarePenIcon, TableIcon, type LucideIcon } from "lucide-react"
 
 /**
  * 갤러리 네비게이션의 단일 소스.
@@ -56,6 +56,25 @@ export const categories: Category[] = [
       { name: "combobox", title: "Combobox" },
       { name: "calendar", title: "Calendar" },
       { name: "slider", title: "Slider" },
+    ],
+  },
+  {
+    slug: "data-display",
+    title: "Data Display",
+    icon: TableIcon,
+    items: [
+      { name: "card", title: "Card" },
+      { name: "table", title: "Table" },
+      { name: "badge", title: "Badge" },
+      { name: "avatar", title: "Avatar" },
+      { name: "separator", title: "Separator" },
+      { name: "skeleton", title: "Skeleton" },
+      { name: "item", title: "Item" },
+      { name: "empty", title: "Empty" },
+      { name: "kbd", title: "Kbd" },
+      { name: "spinner", title: "Spinner" },
+      { name: "progress", title: "Progress" },
+      { name: "aspect-ratio", title: "Aspect Ratio" },
     ],
   },
 ]
