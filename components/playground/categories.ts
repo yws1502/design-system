@@ -1,4 +1,4 @@
-import { ListChecksIcon, PaletteIcon, SquarePenIcon, TableIcon, type LucideIcon } from "lucide-react"
+import { LayersIcon, ListChecksIcon, PaletteIcon, SquarePenIcon, TableIcon, type LucideIcon } from "lucide-react"
 
 /**
  * 갤러리 네비게이션의 단일 소스.
@@ -75,6 +75,20 @@ export const categories: Category[] = [
       { name: "spinner", title: "Spinner" },
       { name: "progress", title: "Progress" },
       { name: "aspect-ratio", title: "Aspect Ratio" },
+    ],
+  },
+  {
+    slug: "overlay",
+    title: "Overlay",
+    icon: LayersIcon,
+    items: [
+      { name: "dialog", title: "Dialog" },
+      { name: "alert-dialog", title: "Alert Dialog" },
+      { name: "sheet", title: "Sheet" },
+      { name: "drawer", title: "Drawer" },
+      { name: "popover", title: "Popover" },
+      { name: "tooltip", title: "Tooltip" },
+      { name: "hover-card", title: "Hover Card" },
     ],
   },
 ]
