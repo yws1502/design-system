@@ -39,7 +39,10 @@ function SheetWithForm() {
               done.
             </SheetDescription>
           </SheetHeader>
-          <div className="style-vega:px-4 style-nova:px-4 style-lyra:px-4 style-maia:px-6 style-mira:px-6 style-luma:px-6 style-rhea:px-6">
+          {/* style-vega만 px-6으로 조정: components/ui/sheet.tsx의 헤더·푸터를
+              p-6으로 올렸으므로 본문도 맞춰야 좌우 정렬이 어긋나지 않는다.
+              나머지 스타일 토큰은 upstream 그대로 둔다. */}
+          <div className="style-vega:px-6 style-nova:px-4 style-lyra:px-4 style-maia:px-6 style-mira:px-6 style-luma:px-6 style-rhea:px-6">
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="sheet-demo-name">Name</FieldLabel>
@@ -106,7 +109,8 @@ function SheetWithSides() {
                   done.
                 </SheetDescription>
               </SheetHeader>
-              <div className="no-scrollbar overflow-y-auto style-vega:px-4 style-nova:px-4 style-lyra:px-4 style-maia:px-6 style-mira:px-6 style-luma:px-6 style-rhea:px-6">
+              {/* 위와 같은 이유로 style-vega만 px-6 */}
+              <div className="no-scrollbar overflow-y-auto style-vega:px-6 style-nova:px-4 style-lyra:px-4 style-maia:px-6 style-mira:px-6 style-luma:px-6 style-rhea:px-6">
                 {Array.from({ length: 10 }).map((_, index) => (
                   <p
                     key={index}

@@ -218,7 +218,16 @@ export const categories: Category[] = [ /* ... */ ]
 - **`Section`에 `description?: string` 추가.** Feedback 페이지에서 Toast를 권장으로, Sonner를 Radix / React Aria용으로 표기하기 위해서다.
 - **`style-*` custom variant를 `app/globals.css`에 정의.** 공식 예제는 `style-vega:p-6`처럼 스타일별 조건부 유틸리티를 쓰는데, 이 variant들은 shadcn 문서 사이트가 스타일 전환기를 위해 자체 보유한 것이라 `shadcn/tailwind.css` 패키지에 들어 있지 않다. 정의하지 않으면 `border` 같은 무조건부 클래스만 살아남아 padding·radius·min-height가 통째로 빠진 채 렌더된다 — Dialog의 Chat Settings 예제가 각진 테두리에 콘텐츠가 붙은 형태로 깨져 보였다. 예제 18개 265곳이 영향받는다. 8개 스타일의 variant를 모두 정의하고 `<html data-style="vega">`로 매칭시켰다. 프리셋을 바꾸면 그 속성값만 바꾸면 된다.
 
-`components/ui/**`와 `components/*-example.tsx`는 전 구간에 걸쳐 변경 0건이다. 부모 레포 공유 계약이 지켜졌다.
+## 원본에서 의도적으로 벗어난 지점
+
+카테고리 페이지 구축이 끝날 때까지 `components/ui/**`와 `components/*-example.tsx`는 변경 0건이었다. 이후 아래 두 곳을 의도적으로 수정했다. **upstream 갱신 시 충돌 지점이므로 여기서 관리한다.**
+
+| 파일 | 변경 | 이유 |
+|---|---|---|
+| `components/ui/sheet.tsx` | `SheetHeader` / `SheetFooter` `p-4` → `p-6`, 닫기 버튼 `top-4 right-4` → `top-5 right-5` | 전체 높이 패널에 16px는 답답하다는 판단. 부모 레포도 이 값을 가져간다 |
+| `components/sheet-example.tsx` | 본문 div 2곳의 `style-vega:px-4` → `px-6` | 위 변경으로 헤더·푸터가 24px가 되어 본문만 16px로 어긋났다. vega 토큰만 손대고 다른 스타일 토큰은 upstream 그대로 뒀다 |
+
+`components/ui/`는 부모 레포 공유 대상이므로, 여기를 손대는 것은 곧 부모의 소스를 바꾸는 것이다. 이후 커스터마이징도 같은 기준으로 판단하고 이 표에 기록한다. 예제 파일은 부모와 공유되지 않으므로 비용이 더 낮다 — upstream diff 충실도만 잃는다.
 
 ## 범위 밖
 
