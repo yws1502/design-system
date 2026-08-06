@@ -26,6 +26,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="ko"
       suppressHydrationWarning
+      // components.json의 style(`base-vega`)과 일치해야 한다.
+      // app/globals.css의 style-* variant가 이 값으로 매칭된다.
+      data-style="vega"
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable)}
     >
       <body className="min-h-full flex flex-col">

@@ -216,6 +216,7 @@ export const categories: Category[] = [ /* ... */ ]
 - **Layout 카테고리의 라우트 세그먼트는 `layout-components`.** `app/playground/layout/`은 Next.js의 `layout.tsx` 규약과 혼동을 부른다. 표시 제목은 `Layout` 그대로다.
 - **`next.config.ts`에 `images.remotePatterns` 추가.** 공식 예제가 `avatar.vercel.sh`와 `images.unsplash.com`을 `next/image`로 로드하는데 호스트가 등록되지 않아 두 라우트가 런타임 500을 냈다. `next build`는 렌더링을 하지 않으므로 이 결함을 잡지 못한다 — 회차마다 실제로 페이지를 열어봐야 한다는 뜻이다. 예제 무수정 원칙에 따라 config로 해결했다.
 - **`Section`에 `description?: string` 추가.** Feedback 페이지에서 Toast를 권장으로, Sonner를 Radix / React Aria용으로 표기하기 위해서다.
+- **`style-*` custom variant를 `app/globals.css`에 정의.** 공식 예제는 `style-vega:p-6`처럼 스타일별 조건부 유틸리티를 쓰는데, 이 variant들은 shadcn 문서 사이트가 스타일 전환기를 위해 자체 보유한 것이라 `shadcn/tailwind.css` 패키지에 들어 있지 않다. 정의하지 않으면 `border` 같은 무조건부 클래스만 살아남아 padding·radius·min-height가 통째로 빠진 채 렌더된다 — Dialog의 Chat Settings 예제가 각진 테두리에 콘텐츠가 붙은 형태로 깨져 보였다. 예제 18개 265곳이 영향받는다. 8개 스타일의 variant를 모두 정의하고 `<html data-style="vega">`로 매칭시켰다. 프리셋을 바꾸면 그 속성값만 바꾸면 된다.
 
 `components/ui/**`와 `components/*-example.tsx`는 전 구간에 걸쳐 변경 0건이다. 부모 레포 공유 계약이 지켜졌다.
 

@@ -4,6 +4,24 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * shadcn 공식 예제는 `style-vega:p-6` 처럼 스타일별 조건부 유틸리티를 쓴다.
+ * 이 variant들은 shadcn 문서 사이트가 스타일 전환기를 위해 자체 보유한 것이라
+ * `shadcn/tailwind.css` 패키지에는 들어 있지 않다. 정의하지 않으면 `border` 같은
+ * 무조건부 클래스만 살아남아 padding/radius/min-height가 통째로 빠진 채 렌더된다.
+ *
+ * 이 프로젝트의 style은 components.json의 `base-vega`이므로 `<html data-style="vega">`
+ * 가 걸려 있고, style-vega:* 만 매칭된다. 프리셋을 바꾸면 그 속성값만 바꾸면 된다.
+ */
+@custom-variant style-vega (&:is([data-style="vega"] *));
+@custom-variant style-nova (&:is([data-style="nova"] *));
+@custom-variant style-maia (&:is([data-style="maia"] *));
+@custom-variant style-lyra (&:is([data-style="lyra"] *));
+@custom-variant style-mira (&:is([data-style="mira"] *));
+@custom-variant style-luma (&:is([data-style="luma"] *));
+@custom-variant style-sera (&:is([data-style="sera"] *));
+@custom-variant style-rhea (&:is([data-style="rhea"] *));
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
