@@ -94,7 +94,7 @@ export function ConfirmDeleteDialog({
     <AlertDialog open={actualOpen} onOpenChange={setOpen}>
       {trigger ? <AlertDialogTrigger render={trigger} /> : null}
 
-      <AlertDialogContent size="sm">
+      <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
             <Trash2Icon />
@@ -107,8 +107,9 @@ export function ConfirmDeleteDialog({
           <FieldLabel htmlFor={inputId}>
             {inputLabel ?? (
               <>
-                계속하려면 <span className="font-mono">{confirmValue}</span>
-                {" "}을 그대로 입력하세요
+                계속하려면{" "}
+                <span className="font-mono">{confirmValue}</span>을 그대로
+                입력하세요
               </>
             )}
           </FieldLabel>

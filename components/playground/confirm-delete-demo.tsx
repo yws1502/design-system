@@ -77,8 +77,8 @@ function ControlledFromList() {
         }
         inputLabel={
           <>
-            확인을 위해 <span className="font-mono">{target?.email}</span>{" "}
-            을 입력하세요
+            확인을 위해{" "}
+            <span className="font-mono">{target?.email}</span>을 입력하세요
           </>
         }
         confirmLabel="멤버 제거"
