@@ -86,7 +86,9 @@ export function GallerySearch() {
       }}
     >
       <ComboboxInput placeholder="컴포넌트 검색" showTrigger={false} />
-      <ComboboxContent className="max-h-80">
+      {/* 높이 제한은 ComboboxList가 자체 max-h로 건다. 여기 max-h를 걸어도
+          팝업에만 붙어 아무 일도 하지 않는다. */}
+      <ComboboxContent>
         <ComboboxEmpty>결과가 없습니다.</ComboboxEmpty>
         <ComboboxList>
           {(entry: SearchEntry) => (
