@@ -84,11 +84,14 @@
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  /* preset(neutral)에는 destructive 외 상태 색이 없다. toast의
-     success/warning을 색으로 구분하기 위해 추가한 토큰. destructive와 같은
-     명도 대비 규칙을 따른다 — light는 진하게, dark는 밝게. */
-  --success: oklch(0.596 0.145 163.225);
-  --warning: oklch(0.646 0.163 72.5);
+  /* preset(neutral)에는 destructive 외 상태 색이 없다. toast·Alert·Badge의
+     success/warning을 색으로 구분하기 위해 추가한 토큰.
+     light 명도는 눈대중이 아니라 실측으로 잡았다 — Alert 제목과 Badge 라벨의
+     WCAG 대비가 destructive 이상이 되는 지점을 브라우저에서 스캔해 골랐다.
+     (success 4.93/4.29, warning 4.78/4.19 vs destructive 4.77/3.97)
+     dark는 기존 값이 이미 destructive보다 여유로워 그대로 둔다. */
+  --success: oklch(0.52 0.145 163.225);
+  --warning: oklch(0.56 0.163 72.5);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);

@@ -138,6 +138,7 @@ export const categories: Category[] = [
       { name: "alert", title: "Alert" },
       { name: "toast", title: "Toast" },
       { name: "sonner", title: "Sonner" },
+      { name: "status-variants", title: "상태 variant" },
       { name: "toast-status", title: "Toast — 상태" },
     ],
   },

@@ -2,6 +2,7 @@ import AlertExample from "@/components/alert-example";
 import SonnerExample from "@/components/sonner-example";
 import ToastExample from "@/components/toast-example";
 import { Section } from "@/components/playground/section";
+import StatusVariantsDemo from "@/components/playground/status-variants-demo";
 import ToastStatusDemo from "@/components/playground/toast-status-demo";
 
 export default function FeedbackPage() {
@@ -23,6 +24,13 @@ export default function FeedbackPage() {
         description="sonner 패키지 기반. 같은 가이드가 Radix / React Aria 프로젝트용으로 안내한다. 공식 문서에 deprecated 표기는 없고 이 프로젝트에서도 정상 동작한다."
       >
         <SonnerExample />
+      </Section>
+      <Section
+        id="status-variants"
+        title="상태 variant"
+        description="Alert과 Badge에 success · warning을 넓혔다. 원본에는 destructive만 있었고, toast에 쓰려고 추가한 --success · --warning 토큰을 그대로 쓴다. Badge는 Data Display 소속이지만 상태 표현을 한곳에서 비교할 수 있게 여기 함께 둔다."
+      >
+        <StatusVariantsDemo />
       </Section>
       <Section
         id="toast-status"

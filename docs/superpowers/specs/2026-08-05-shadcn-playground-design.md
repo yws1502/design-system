@@ -229,6 +229,18 @@ export const categories: Category[] = [ /* ... */ ]
 | `app/globals.css` | `--success` / `--warning` 토큰 추가 (light·dark, `@theme inline` 등록 포함) | preset(neutral)에는 상태 색이 `--destructive` 하나뿐이라 toast의 success·warning을 색으로 구분할 수 없었다. `--destructive`와 같은 명도 규칙을 따른다 — light는 진하게, dark는 밝게 |
 | `components/ui/toast.tsx` | `ToastIcon`의 success → `text-success`, warning → `text-warning` | 원본은 error만 `text-destructive`로 칠하고 나머지는 기본 텍스트색이었다 |
 | `components/ui/sonner.tsx` | success·warning·error 아이콘에 대응 색 클래스 추가 | 두 구현의 상태 색을 일치시키기 위해서다 |
+| `components/ui/alert.tsx` | `warning` · `success` variant 추가 | 원본은 `default`와 `destructive`뿐이었다. destructive 정의를 그대로 미러링 |
+| `components/ui/badge.tsx` | `warning` · `success` variant 추가 | 위와 같음 |
+
+**light 모드 토큰 명도는 실측으로 잡았다.** 처음 눈대중으로 넣은 값(success L 0.596 / warning L 0.646)은 destructive보다 밝아서 대비가 모자랐다 — Alert 제목 기준 success 3.65 / warning 3.35로, destructive 4.77과 WCAG AA 4.5 모두에 못 미쳤다. 브라우저에서 명도를 스캔해 destructive 이상이 되는 지점을 골랐다.
+
+| | Alert 제목 | Badge 라벨 |
+|---|---|---|
+| destructive (원본) | 4.77 | 3.97 |
+| success `L 0.52` | 4.93 | 4.29 |
+| warning `L 0.56` | 4.78 | 4.19 |
+
+dark는 기존 값이 이미 destructive(6.21)보다 여유로워(success 7.81 / warning 9.05) 그대로 뒀다. Badge가 4.5에 못 미치는 것은 원본 destructive(3.97)부터 그렇다 — 우리 두 색은 그보다는 높다.
 
 ### 갤러리 전역 검색
 
