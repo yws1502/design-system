@@ -99,7 +99,7 @@ export function ConfirmDeleteDialog({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center gap-2">
-            <TriangleAlertIcon className="text-destructive size-4 shrink-0" />
+            <TriangleAlertIcon className="text-destructive size-5 shrink-0" />
             {title}
           </AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
