@@ -19,11 +19,21 @@ shadcn/ui(Base UI) 컴포넌트 60개와 자체 조합 패턴을 담은 디자�
 ## 서브모듈로 붙이기
 
 ```bash
-git submodule add <이 레포 URL> vendor/design-system
+git submodule add https://github.com/yws1502/design-system.git vendor/design-system
 git submodule update --init
 ```
 
-`tsconfig.json`에서 경로를 잡거나 필요한 폴더만 복사해 쓴다. 서브모듈로 두면 `git submodule update --remote`로 갱신할 수 있다.
+**태그에 고정하는 것을 권한다.** `main`을 따라가면 여기서 무엇을 바꾸든 즉시 끌려간다.
+
+```bash
+cd vendor/design-system
+git checkout v0.1.0
+cd ../.. && git add vendor/design-system && git commit -m "chore: pin design-system to v0.1.0"
+```
+
+올릴 때는 원하는 태그로 체크아웃하고 다시 커밋한다. 무엇이 바뀌었는지는 `CHANGELOG.md`를 본다.
+
+`tsconfig.json`에서 경로를 잡거나 필요한 폴더만 복사해 쓴다.
 
 ## 소비하는 쪽에 필요한 것
 

@@ -25,6 +25,37 @@ shadcn/ui(**Base UI**, `base-vega`) 컴포넌트를 담은 디자인 시스템�
 
 문서·주석만 고쳤거나 리팩터링으로 동작이 그대로면 남기지 않아도 된다.
 
+## 버전 태그
+
+서브모듈로 쓰는 쪽은 커밋 SHA가 아니라 **태그에 고정**한다. 태그가 없으면 소비자는 `main`을 따라갈 수밖에 없고, 그러면 우리가 뭘 바꾸든 즉시 끌려간다.
+
+태그 형식은 `v<major>.<minor>.<patch>`. 유의적 버전을 이 레포 기준으로 읽으면 이렇다.
+
+| | 언제 | 예 |
+|---|---|---|
+| **major** | `components/ui/` · `components/patterns/`의 API가 깨지거나, 소비자가 쓰던 토큰을 없앨 때 | prop 이름 변경, variant 제거, `--warning` 삭제 |
+| **minor** | 하위 호환되는 추가 | 컴포넌트·패턴·variant·토큰 추가 |
+| **patch** | API 변화 없는 수정 | 버그 수정, 스타일 조정 |
+
+**갤러리(`app/`, `components/playground/`, `scripts/`)만 바뀌었다면 태그하지 않는다.** 소비하는 쪽에 줄 것이 없다.
+
+### 릴리스 절차
+
+```bash
+# 1. CHANGELOG.md 의 [Unreleased] 를 [x.y.z] - YYYY-MM-DD 로 바꾸고
+#    새 [Unreleased] 를 위에 만든다. 하단 비교 링크도 갱신한다.
+# 2. 커밋
+git commit -m "chore: release vx.y.z"
+
+# 3. 주석 있는 태그 (경량 태그는 쓰지 않는다 — 작성자·날짜가 남지 않는다)
+git tag -a vx.y.z -m "vx.y.z"
+
+# 4. 커밋과 태그를 함께 밀어야 원격에 태그가 생긴다
+git push origin main --follow-tags
+```
+
+`git push`만 하면 **태그는 올라가지 않는다.** `--follow-tags`를 빠뜨리지 않는다.
+
 ## 디렉터리 경계
 
 여기를 어기면 부모 레포와의 계약이 깨진다.
