@@ -4,6 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 import { categories } from "@/components/playground/categories"
+import { GallerySearch } from "@/components/playground/gallery-search"
 import { SidebarUser } from "@/components/playground/sidebar-user"
 import {
   Sidebar,
@@ -30,6 +31,10 @@ export function GallerySidebar() {
       <SidebarHeader>
         <div className="flex h-8 items-center px-2 text-sm font-semibold group-data-[collapsible=icon]:hidden">
           Design System
+        </div>
+        {/* 아이콘 모드에서는 폭이 없어 검색창을 숨긴다 */}
+        <div className="px-1 group-data-[collapsible=icon]:hidden">
+          <GallerySearch />
         </div>
       </SidebarHeader>
 
