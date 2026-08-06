@@ -98,6 +98,7 @@ export const categories: Category[] = [
     items: [
       { name: "dialog", title: "Dialog" },
       { name: "alert-dialog", title: "Alert Dialog" },
+      { name: "confirm-delete", title: "Confirm Delete" },
       { name: "sheet", title: "Sheet" },
       { name: "drawer", title: "Drawer" },
       { name: "popover", title: "Popover" },

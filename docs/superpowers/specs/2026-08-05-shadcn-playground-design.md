@@ -230,6 +230,16 @@ export const categories: Category[] = [ /* ... */ ]
 | `components/ui/toast.tsx` | `ToastIcon`의 success → `text-success`, warning → `text-warning` | 원본은 error만 `text-destructive`로 칠하고 나머지는 기본 텍스트색이었다 |
 | `components/ui/sonner.tsx` | success·warning·error 아이콘에 대응 색 클래스 추가 | 두 구현의 상태 색을 일치시키기 위해서다 |
 
+### `components/patterns/` — 우리가 조합한 패턴
+
+shadcn 원본도 playground 전용도 아닌, 이 레포에서 만든 재사용 컴포넌트가 사는 곳이다. 부모 레포는 `components/ui/`와 함께 이 폴더를 가져간다.
+
+| 파일 | 내용 |
+|---|---|
+| `confirm-delete-dialog.tsx` | 대상 이름을 정확히 입력해야 삭제 버튼이 열리는 확인 다이얼로그. 제어·비제어 모두 지원 |
+
+**설계 근거 하나.** `AlertDialogAction`은 `Close`가 아니라 순수 `Button`이라 스스로 닫히지 않는다 (비동기 삭제를 고려한 shadcn의 의도적 설계). 따라서 확인 후 닫는 책임이 소비자에게 있고, `trigger`만 넘기는 비제어 사용에서도 이 컴포넌트가 내부 열림 상태를 들고 있어야 한다.
+
 `info`와 `loading`은 의도적으로 중립색을 유지한다. 주의를 끌 이유가 없는 상태이고, 색을 늘릴수록 상태 간 위계가 흐려진다.
 
 `components/ui/`는 부모 레포 공유 대상이므로, 여기를 손대는 것은 곧 부모의 소스를 바꾸는 것이다. 이후 커스터마이징도 같은 기준으로 판단하고 이 표에 기록한다. 예제 파일은 부모와 공유되지 않으므로 비용이 더 낮다 — upstream diff 충실도만 잃는다.
