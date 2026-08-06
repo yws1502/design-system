@@ -1,5 +1,6 @@
 import {
   BellIcon,
+  BlocksIcon,
   ChartColumnIcon,
   CompassIcon,
   LayersIcon,
@@ -173,5 +174,11 @@ export const categories: Category[] = [
     title: "Chart",
     icon: ChartColumnIcon,
     items: [{ name: "chart", title: "Chart" }],
+  },
+  {
+    slug: "blocks",
+    title: "Blocks",
+    icon: BlocksIcon,
+    items: [{ name: "blocks", title: "Blocks" }],
   },
 ]

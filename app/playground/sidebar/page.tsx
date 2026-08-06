@@ -30,18 +30,12 @@ const SHOWCASES = [
     title: "Sidebar — Floating",
     description: "떠 있는 형태의 floating 변형.",
   },
-  {
-    href: "/showcase/block-sidebar-07",
-    title: "Block — sidebar-07",
-    description:
-      "레지스트리 블록. 팀 전환기, 접히는 네비, 사용자 메뉴가 붙은 완성형 셸.",
-  },
 ];
 
 export default function SidebarPage() {
   return (
     <Section id="sidebar" title="Sidebar">
-      <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-12 2xl:max-w-6xl">
+      <div className="mx-auto min-h-[calc(100vh-3.5rem)] w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-12 2xl:max-w-6xl">
         <p className="text-muted-foreground mb-6 text-sm">
           Sidebar 예제는 각자 SidebarProvider를 렌더하는 전체 페이지 레이아웃이라
           갤러리 셸 안에서는 Provider가 중첩된다. 별도 라우트에서 연다.
