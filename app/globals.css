@@ -45,6 +45,8 @@
   --color-input: var(--input);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -82,6 +84,11 @@
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
+  /* preset(neutral)에는 destructive 외 상태 색이 없다. toast의
+     success/warning을 색으로 구분하기 위해 추가한 토큰. destructive와 같은
+     명도 대비 규칙을 따른다 — light는 진하게, dark는 밝게. */
+  --success: oklch(0.596 0.145 163.225);
+  --warning: oklch(0.646 0.163 72.5);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
@@ -117,6 +124,8 @@
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
+  --success: oklch(0.723 0.149 163.223);
+  --warning: oklch(0.789 0.154 78.5);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);

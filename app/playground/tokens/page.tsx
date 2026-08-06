@@ -58,6 +58,29 @@ const ACCENT_TOKENS: ColorToken[] = [
   },
 ];
 
+// preset(neutral)에 없어서 직접 추가한 상태 토큰. toast의 success/warning을
+// 색으로 구분하는 데 쓴다. 상세는 스펙의 "원본에서 의도적으로 벗어난 지점" 참조.
+const STATUS_TOKENS: ColorToken[] = [
+  {
+    name: "--success",
+    className: "bg-success",
+    foregroundClassName: "text-white",
+    foregroundName: "(추가 토큰)",
+  },
+  {
+    name: "--warning",
+    className: "bg-warning",
+    foregroundClassName: "text-white",
+    foregroundName: "(추가 토큰)",
+  },
+  {
+    name: "--destructive",
+    className: "bg-destructive",
+    foregroundClassName: "text-white",
+    foregroundName: "(preset 기본)",
+  },
+];
+
 const BORDER_TOKENS: ColorToken[] = [
   { name: "--border", className: "bg-border" },
   { name: "--input", className: "bg-input" },
@@ -112,6 +135,10 @@ export default function TokensPage() {
 
         <Example title="Accents">
           <TokenGrid tokens={ACCENT_TOKENS} />
+        </Example>
+
+        <Example title="Status">
+          <TokenGrid tokens={STATUS_TOKENS} className="sm:grid-cols-3" />
         </Example>
 
         <Example title="Borders & Rings">

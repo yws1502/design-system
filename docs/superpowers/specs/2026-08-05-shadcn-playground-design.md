@@ -226,6 +226,11 @@ export const categories: Category[] = [ /* ... */ ]
 |---|---|---|
 | `components/ui/sheet.tsx` | `SheetHeader` / `SheetFooter` `p-4` → `p-6`, 닫기 버튼 `top-4 right-4` → `top-5 right-5` | 전체 높이 패널에 16px는 답답하다는 판단. 부모 레포도 이 값을 가져간다 |
 | `components/sheet-example.tsx` | 본문 div 2곳의 `style-vega:px-4` → `px-6` | 위 변경으로 헤더·푸터가 24px가 되어 본문만 16px로 어긋났다. vega 토큰만 손대고 다른 스타일 토큰은 upstream 그대로 뒀다 |
+| `app/globals.css` | `--success` / `--warning` 토큰 추가 (light·dark, `@theme inline` 등록 포함) | preset(neutral)에는 상태 색이 `--destructive` 하나뿐이라 toast의 success·warning을 색으로 구분할 수 없었다. `--destructive`와 같은 명도 규칙을 따른다 — light는 진하게, dark는 밝게 |
+| `components/ui/toast.tsx` | `ToastIcon`의 success → `text-success`, warning → `text-warning` | 원본은 error만 `text-destructive`로 칠하고 나머지는 기본 텍스트색이었다 |
+| `components/ui/sonner.tsx` | success·warning·error 아이콘에 대응 색 클래스 추가 | 두 구현의 상태 색을 일치시키기 위해서다 |
+
+`info`와 `loading`은 의도적으로 중립색을 유지한다. 주의를 끌 이유가 없는 상태이고, 색을 늘릴수록 상태 간 위계가 흐려진다.
 
 `components/ui/`는 부모 레포 공유 대상이므로, 여기를 손대는 것은 곧 부모의 소스를 바꾸는 것이다. 이후 커스터마이징도 같은 기준으로 판단하고 이 표에 기록한다. 예제 파일은 부모와 공유되지 않으므로 비용이 더 낮다 — upstream diff 충실도만 잃는다.
 
