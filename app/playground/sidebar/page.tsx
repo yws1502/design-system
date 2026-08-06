@@ -30,6 +30,12 @@ const SHOWCASES = [
     title: "Sidebar — Floating",
     description: "떠 있는 형태의 floating 변형.",
   },
+  {
+    href: "/showcase/block-sidebar-07",
+    title: "Block — sidebar-07",
+    description:
+      "레지스트리 블록. 팀 전환기, 접히는 네비, 사용자 메뉴가 붙은 완성형 셸.",
+  },
 ];
 
 export default function SidebarPage() {
