@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Trash2Icon } from "lucide-react";
+import { TriangleAlertIcon } from "lucide-react";
 
 import {
   AlertDialog,
@@ -11,11 +11,10 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogMedia,
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
+import { Field, FieldDescription } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 
 /**
@@ -28,12 +27,14 @@ import { Input } from "@/components/ui/input";
  * shadcn 원본이 아니라 이 레포에서 조합한 패턴이다.
  */
 export type ConfirmDeleteDialogProps = {
-  /** 사용자가 그대로 입력해야 하는 문자열. 보통 삭제 대상의 이름 */
+  /**
+   * 사용자가 그대로 입력해야 하는 문자열.
+   * 관례상 `"<대상 이름> 삭제"` 형태를 쓴다 — 이름만 요구하면 무심코 복사해
+   * 붙여넣기 쉬운데, 동사가 붙으면 삭제라는 사실을 한 번 더 읽게 된다.
+   */
   confirmValue: string;
   title: string;
   description: React.ReactNode;
-  /** 입력란 위 라벨. 기본값은 confirmValue를 안내하는 문장 */
-  inputLabel?: React.ReactNode;
   confirmLabel?: string;
   cancelLabel?: string;
   /**
@@ -50,7 +51,6 @@ export function ConfirmDeleteDialog({
   confirmValue,
   title,
   description,
-  inputLabel,
   confirmLabel = "삭제",
   cancelLabel = "취소",
   trigger,
@@ -59,6 +59,8 @@ export function ConfirmDeleteDialog({
   onConfirm,
 }: ConfirmDeleteDialogProps) {
   const inputId = React.useId();
+  const hintId = `${inputId}-hint`;
+  const errorId = `${inputId}-error`;
   const [value, setValue] = React.useState("");
 
   // `AlertDialogAction`은 Close가 아니라 순수 Button이라 스스로 닫히지 않는다
@@ -96,29 +98,33 @@ export function ConfirmDeleteDialog({
 
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
-            <Trash2Icon />
-          </AlertDialogMedia>
-          <AlertDialogTitle>{title}</AlertDialogTitle>
+          <AlertDialogTitle className="flex items-center gap-2">
+            <TriangleAlertIcon className="text-destructive size-4 shrink-0" />
+            {title}
+          </AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
 
         <Field data-invalid={invalid || undefined}>
-          <FieldLabel htmlFor={inputId}>
-            {inputLabel ?? (
-              <>
-                계속하려면{" "}
-                <span className="font-mono">{confirmValue}</span>을 그대로
-                입력하세요
-              </>
-            )}
-          </FieldLabel>
+          {/*
+            안내 문장을 `<label>`로 만들지 않는다. label 안의 텍스트는 클릭이
+            연결된 input으로 넘어가면서 선택이 취소돼 드래그도 복사도 되지 않는다.
+            대신 문단에 id를 주고 `aria-labelledby`로 연결해 접근성 이름을 잇는다.
+          */}
+          <p id={hintId} className="text-destructive text-sm">
+            되돌릴 수 없습니다. 확인하려면{" "}
+            <strong className="font-semibold select-text">
+              {confirmValue}
+            </strong>
+            를 입력하세요.
+          </p>
           <Input
             id={inputId}
             value={value}
             autoComplete="off"
+            aria-labelledby={hintId}
             aria-invalid={invalid || undefined}
-            aria-describedby={invalid ? `${inputId}-error` : undefined}
+            aria-describedby={invalid ? errorId : undefined}
             onChange={(event) => setValue(event.target.value)}
             onKeyDown={(event) => {
               if (event.key === "Enter") {
@@ -128,7 +134,7 @@ export function ConfirmDeleteDialog({
             }}
           />
           {invalid ? (
-            <FieldDescription id={`${inputId}-error`} className="text-destructive">
+            <FieldDescription id={errorId} className="text-muted-foreground">
               입력한 값이 일치하지 않습니다.
             </FieldDescription>
           ) : null}
