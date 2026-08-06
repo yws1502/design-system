@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "gen:search-index": "node scripts/gen-search-index.mjs",
+    "predev": "node scripts/gen-search-index.mjs",
+    "prebuild": "node scripts/gen-search-index.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

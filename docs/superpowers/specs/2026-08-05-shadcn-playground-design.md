@@ -230,6 +230,16 @@ export const categories: Category[] = [ /* ... */ ]
 | `components/ui/toast.tsx` | `ToastIcon`의 success → `text-success`, warning → `text-warning` | 원본은 error만 `text-destructive`로 칠하고 나머지는 기본 텍스트색이었다 |
 | `components/ui/sonner.tsx` | success·warning·error 아이콘에 대응 색 클래스 추가 | 두 구현의 상태 색을 일치시키기 위해서다 |
 
+### 갤러리 전역 검색
+
+사이드바 헤더의 Combobox가 컴포넌트·서브 예제·카테고리를 한 번에 검색한다. "Mul"만 쳐도 Accordion / Calendar / Carousel / Combobox / Select / Slider / Tabs의 Multiple 변형 11개가 한 번에 올라온다.
+
+**인덱스는 생성물이다.** 서브 예제 제목(`<Example title="...">`)은 벤더 예제 파일의 JSX 안에만 있어 브라우저에서 읽을 수 없다. `scripts/gen-search-index.mjs`가 `components/*-example.tsx`와 `components/playground/*-demo.tsx`를 훑어 `components/playground/search-index.ts`를 만든다 (482건 = 컴포넌트 62 + 서브 예제 420). `predev` / `prebuild`에 걸어두어 낡을 일이 없다.
+
+**서브 예제로 정확히 이동한다.** 벤더 예제에는 앵커 id가 없지만 `Example`이 `data-slot="example"`을 붙인다. 카테고리 페이지로 이동한 뒤 제목이 일치하는 블록을 DOM에서 찾아 스크롤하므로 예제 파일을 420번 고칠 필요가 없다.
+
+검색어는 **영문 기준**이다. 서브 예제 제목이 전부 영문이라 한글로는 걸리지 않는다. 별칭 맵은 두지 않기로 했다.
+
 ### `components/patterns/` — 우리가 조합한 패턴
 
 shadcn 원본도 playground 전용도 아닌, 이 레포에서 만든 재사용 컴포넌트가 사는 곳이다. 부모 레포는 `components/ui/`와 함께 이 폴더를 가져간다.
