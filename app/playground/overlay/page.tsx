@@ -20,7 +20,7 @@ export default function OverlayPage() {
       <Section
         id="confirm-delete"
         title="Confirm Delete"
-        description="되돌릴 수 없는 삭제에 쓰는 패턴. 대상 이름을 정확히 입력해야 삭제 버튼이 열린다. shadcn 원본이 아니라 이 레포에서 조합한 것으로, components/patterns/에 있다."
+        description="삭제 확인 패턴 두 가지. 되돌릴 수 없는 삭제는 Dialog로 확인 문자열을 직접 입력받고, 가벼운 삭제는 버튼 자리에 뜨는 Popover로 끝낸다. shadcn 원본이 아니라 이 레포에서 조합한 것으로 components/patterns/에 있다."
       >
         <ConfirmDeleteDemo />
       </Section>

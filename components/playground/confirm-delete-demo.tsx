@@ -4,6 +4,7 @@ import * as React from "react";
 
 import { Example, ExampleWrapper } from "@/components/example";
 import { ConfirmDeleteDialog } from "@/components/patterns/confirm-delete-dialog";
+import { ConfirmDeletePopover } from "@/components/patterns/confirm-delete-popover";
 import { Button } from "@/components/ui/button";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 import { toast } from "@/components/ui/toast";
@@ -93,11 +94,65 @@ function ControlledFromList() {
   );
 }
 
+const FILES = [
+  { id: "f_1", name: "report-2026-q1.pdf", meta: "PDF · 2.4 MB" },
+  { id: "f_2", name: "logo-mark.svg", meta: "SVG · 12 KB" },
+  { id: "f_3", name: "meeting-notes.md", meta: "Markdown · 4 KB" },
+];
+
+function LightweightPopover() {
+  const [files, setFiles] = React.useState(FILES);
+
+  return (
+    <Example title="가벼운 삭제 — Popover">
+      <div className="flex w-full flex-col gap-2">
+        {files.map((file) => (
+          <Item key={file.id} variant="outline">
+            <ItemContent>
+              <ItemTitle>{file.name}</ItemTitle>
+              <ItemDescription>{file.meta}</ItemDescription>
+            </ItemContent>
+            <ConfirmDeletePopover
+              description={`${file.name}을 목록에서 제거합니다.`}
+              trigger={
+                <Button variant="ghost" size="sm">
+                  삭제
+                </Button>
+              }
+              onConfirm={() => {
+                setFiles((prev) => prev.filter((f) => f.id !== file.id));
+                toast.add({
+                  type: "success",
+                  title: "파일을 삭제했습니다",
+                  description: file.name,
+                });
+              }}
+            />
+          </Item>
+        ))}
+        {files.length === 0 ? (
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-muted-foreground text-sm">파일이 없습니다.</p>
+            <Button variant="outline" size="sm" onClick={() => setFiles(FILES)}>
+              되돌리기
+            </Button>
+          </div>
+        ) : null}
+      </div>
+      <p className="text-muted-foreground text-sm">
+        확인이 버튼 자리에서 뜨므로 마우스가 화면 중앙까지 이동하지 않는다.
+        되돌릴 수 있거나 영향 범위가 작은 삭제에 쓴다.
+      </p>
+    </Example>
+  );
+}
+
 export default function ConfirmDeleteDemo() {
   return (
     <ExampleWrapper>
       <TriggerBased />
       <ControlledFromList />
+      <LightweightPopover />
     </ExampleWrapper>
   );
 }
