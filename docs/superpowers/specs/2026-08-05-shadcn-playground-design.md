@@ -312,7 +312,11 @@ yes n | pnpm dlx shadcn@latest add @shadcn/<block>
 git diff --stat components/ui/     # 비어 있어야 한다
 ```
 
-`sidebar-07`은 `/avatars/shadcn.jpg`를 참조하는데 레지스트리가 배포하지 않아 404가 났다. 실존 인물 사진을 지어내는 대신 참조를 비웠고, `AvatarFallback`이 이니셜을 띄운다.
+`sidebar-07`과 `dashboard-01`은 `/avatars/shadcn.jpg`를 참조하는데 레지스트리가 배포하지 않아 404가 났다. 실존 인물 사진을 지어내는 대신 참조를 비웠고, `AvatarFallback`이 이니셜을 띄운다.
+
+**`@tanstack/react-table`은 v8로 고정한다.** `dashboard-01`의 `dependencies`에 버전 제약이 없어 pnpm이 최신 v9를 설치하는데, 블록 코드는 v8 API로 쓰여 있다 (`useReactTable` → v9에서 `ReactTable`, `getCoreRowModel` → `createCoreRowModel`). 타입 에러 10건이 났고 `^8`로 내려 해결했다. upstream이 블록을 v9로 옮기기 전까지는 이 핀을 풀면 안 된다.
+
+블록이 끌어온 의존성: `@dnd-kit/*` 4종, `@tanstack/react-table@^8`, `zod`.
 
 ### `shadcn add` 실행 시 항상 확인할 것
 

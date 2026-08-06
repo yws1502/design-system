@@ -27,6 +27,12 @@ const BLOCKS = [
     title: "login-03",
     description: "muted 배경 위에 카드로 올라간 로그인 화면.",
   },
+  {
+    href: "/showcase/block-dashboard-01",
+    title: "dashboard-01",
+    description:
+      "차트, 드래그 정렬되는 데이터 테이블, 지표 카드가 붙은 대시보드. 가장 큰 블록이다.",
+  },
 ];
 
 export default function BlocksPage() {
