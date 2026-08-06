@@ -273,6 +273,39 @@ shadcn 원본도 playground 전용도 아닌, 이 레포에서 만든 재사용 
 
 `components/ui/`는 부모 레포 공유 대상이므로, 여기를 손대는 것은 곧 부모의 소스를 바꾸는 것이다. 이후 커스터마이징도 같은 기준으로 판단하고 이 표에 기록한다. 예제 파일은 부모와 공유되지 않으므로 비용이 더 낮다 — upstream diff 충실도만 잃는다.
 
+## 블록(`registry:block`)은 다루지 않는다
+
+레지스트리에는 블록 30개가 있다 — `sidebar-01`~`16`, `login-01`~`05`, `signup-01`~`05`, `dashboard-01`, `preview` 3종. **의도적으로 설치하지 않는다.**
+
+블록은 로그인 페이지·대시보드 같은 **앱 스캐폴드**지 디자인 시스템 컴포넌트가 아니다. 부모 레포는 `components/ui/`를 라이브러리로 소비하지만 블록은 한 번 복사해 쓰는 시작점이라, 이 갤러리의 목적(컴포넌트 검수)과 결이 다르다.
+
+기술적으로도 그냥 넣을 수 없다. `--dry-run`으로 실측한 결과:
+
+**1. 우리 커스터마이징을 덮어쓴다.**
+
+| 블록 | 덮어쓰는 파일 |
+|---|---|
+| `sidebar-*` 전부 | `components/ui/sheet.tsx` |
+| `dashboard-01` | `components/ui/sheet.tsx`, `badge.tsx`, `sonner.tsx` |
+
+위 "원본에서 의도적으로 벗어난 지점" 6건 중 3건이 조용히 되돌아간다.
+
+**2. 블록끼리 같은 경로를 쓴다.** `sidebar-01`~`16`과 `dashboard-01`이 모두 `app/dashboard/page.tsx`를, `login-01`~`05`가 모두 `app/login/page.tsx`를 쓴다. 순차 설치하면 마지막 것만 남는다.
+
+**3. 컴포넌트 이름도 충돌한다.** `components/app-sidebar.tsx`, `nav-main.tsx`, `nav-user.tsx`를 여러 블록이 서로 다른 내용으로 쓴다.
+
+격리 설치 스크립트로 우회할 수는 있으나(레지스트리 JSON을 직접 받아 블록별 디렉터리에 넣고 import를 재작성), 그러면 "공식 원본 그대로"라는 이 레포의 원칙이 깨진다.
+
+### `shadcn add` 실행 시 항상 확인할 것
+
+블록만의 문제가 아니다. **앞으로 어떤 컴포넌트를 추가하든, 그 의존성에 우리가 손댄 파일이 끼어 있으면 CLI가 덮어쓴다.** 예를 들어 `sheet`를 의존하는 컴포넌트를 추가하면 Sheet padding이 원복된다.
+
+```bash
+pnpm dlx shadcn@latest add <item> --dry-run   # 먼저 overwrite 목록 확인
+pnpm dlx shadcn@latest add <item>
+git diff components/ui/                        # 되돌아간 커스터마이징이 없는지 확인
+```
+
 ## 범위 밖
 
 - 스크린샷 회귀 테스트 — 카테고리가 충분히 쌓인 뒤 필요하면 추가한다.
