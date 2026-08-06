@@ -169,7 +169,7 @@ export const categories: Category[] = [ /* ... */ ]
 | Form | `form-example`이 존재하지 않음 | 제외. Base UI에서는 `field`가 폼 레이아웃을 담당하므로 `field-example`로 대체 |
 | Sidebar 블록 예제 | 페이지 전체 점유, 중첩 Provider | `playground/showcase/sidebar-*` 전용 라우트 |
 | Chart | recharts 의존 | 전용 회차 (12회차) |
-| Toast | ~~deprecated, Sonner 권장~~ **정정**: Base UI 프로젝트는 `toast`가 정답이고 Sonner는 Radix / Aria용이다 | 둘 다 전시하되 `toast`를 권장으로 표기 |
+| Toast / Sonner | 권장 관계에 대한 서술이 두 번 틀렸다. **최종 확인**: `/docs/components/base/toast`와 `/docs/components/base/sonner` 어디에도 deprecated 표기나 상호 권장 문구가 **없다**. "Base UI는 `toast`, Radix / Aria는 `sonner`"는 이 레포에 번들된 shadcn 에이전트 가이드(`.claude/skills/shadcn/SKILL.md:67-69`)의 규칙이지 문서 사이트의 서술이 아니다 | 둘 다 전시하고, 각 섹션 설명에 출처를 명시. 둘 다 정상 동작한다 |
 | Data Table | UI 항목도 example도 없음 (Table + TanStack 조합 문서일 뿐) | 계획에서 제외 |
 | Date Picker | UI 항목도 example도 없음 (Calendar + Popover 조합 문서) | 제외. `calendar-example`이 커버 |
 | Typography | 컴포넌트가 아니라 스타일 가이드 | Theme Tokens 페이지에 수동 작성 |

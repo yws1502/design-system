@@ -1,10 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // 기본 위치(좌하단)가 사이드바 푸터의 프로젝트 블록을 가린다.
-  devIndicators: {
-    position: "bottom-right",
-  },
+  // 좌하단은 사이드바 푸터의 프로젝트 블록, 우하단은 토스트가 쓴다.
+  // 갤러리에서는 양쪽 하단이 모두 검수 대상이라 인디케이터를 끈다.
+  devIndicators: false,
   images: {
     remotePatterns: [
       {
