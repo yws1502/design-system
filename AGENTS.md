@@ -12,6 +12,19 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 shadcn/ui(**Base UI**, `base-vega`) 컴포넌트를 담은 디자인 시스템이다. 다른 레포가 서브모듈로 **소스를 가져다 쓴다.** 개요는 `README.md`, 결정 근거는 `docs/superpowers/specs/`에 있다.
 
+## 변경사항은 CHANGELOG.md 에 남긴다
+
+이 레포는 다른 레포가 서브모듈로 소스를 가져다 쓴다. 소비하는 쪽은 **커밋 로그가 아니라 `CHANGELOG.md`를 보고** 무엇이 바뀌었는지 판단한다.
+
+**코드를 바꿨으면 커밋 전에 `CHANGELOG.md`의 `[Unreleased]`에 항목을 추가한다.**
+
+- `components/ui/`, `components/patterns/`, 토큰(`app/globals.css`) 변경은 **"소비하는 쪽에 영향 있음"** 아래에 쓴다. 이쪽이 가장 중요하다.
+- 갤러리(`app/`, `components/playground/`, `scripts/`)만 바뀌었다면 **"갤러리 전용"** 아래에 쓴다.
+- `Added` / `Changed` / `Fixed` / `Removed`로 분류한다.
+- **무엇을 바꿨는지가 아니라 왜 바꿨는지, 그리고 소비하는 쪽이 무엇을 해야 하는지**를 쓴다. 파일명만 나열하면 커밋 로그와 다를 게 없다.
+
+문서·주석만 고쳤거나 리팩터링으로 동작이 그대로면 남기지 않아도 된다.
+
 ## 디렉터리 경계
 
 여기를 어기면 부모 레포와의 계약이 깨진다.

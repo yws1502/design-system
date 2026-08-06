@@ -107,3 +107,4 @@ pnpm dev        # http://localhost:3000
 | `docs/superpowers/specs/` | 설계 결정과 근거. **원본에서 벗어난 지점**과 그 이유가 여기 있다 |
 | `docs/superpowers/notes/` | 레지스트리 조사 결과 |
 | `AGENTS.md` | 이 레포에서 작업할 때의 규칙 |
+| `CHANGELOG.md` | 버전별 변경 이력. **소비하는 쪽에 영향 있는 변경**을 따로 묶어 둔다 |
