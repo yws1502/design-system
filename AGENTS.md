@@ -56,6 +56,38 @@ git push origin main --follow-tags
 
 `git push`만 하면 **태그는 올라가지 않는다.** `--follow-tags`를 빠뜨리지 않는다.
 
+## 서브모듈에서 이 레포를 고칠 때
+
+소비하는 앱에서 `vendor/design-system` 안으로 들어가 고치고 push하는 것은 **기술적으로 된다.** 서브모듈 디렉터리는 완전한 git 저장소이고, `.git`이 디렉터리 대신 `gitdir:` 파일인 것만 다르다.
+
+**하지만 기본적으로 하지 않는다.** 앱에서 `components/ui/`를 직접 고쳐 push하면 CHANGELOG·태그 규율을 통째로 우회한다. 다른 소비자는 무엇이 왜 바뀌었는지 알 수 없고, 태그에 고정한 쪽은 그 변경을 받지도 못한다. **이 레포에서 작업하고, 태그를 끊어 배포한다.**
+
+앱 쪽에서 급히 고쳐야 한다면 브랜치를 따서 PR을 올린다. `main`에 직접 push하지 않는다.
+
+### 그래도 서브모듈에서 작업한다면
+
+함정이 두 개 있다. 둘 다 실측으로 확인된 것이다.
+
+**1. detached HEAD.** 부모 레포를 새로 클론하면 서브모듈은 브랜치가 없는 상태다. 여기서 커밋하면 커밋은 만들어지지만 어느 브랜치에도 붙지 않고 push가 거부된다.
+
+```bash
+cd vendor/design-system
+git status -sb          # "## HEAD (no branch)" 면 detached
+git checkout main       # 반드시 먼저
+```
+
+**2. 부모도 커밋해야 한다.** 부모는 서브모듈의 특정 커밋을 가리키는 포인터(gitlink, mode `160000`)만 들고 있다. 서브모듈에서 push해도 부모가 이 포인터를 커밋하지 않으면 부모 입장에선 아무것도 바뀌지 않았다.
+
+```bash
+# 순서를 지킨다. 부모를 먼저 밀면 원격에 없는 커밋을 가리키게 된다.
+cd vendor/design-system && git push origin <branch>
+cd ../.. && git add vendor/design-system && git commit -m "chore: bump design-system"
+git push
+
+# 또는 한 번에
+git push --recurse-submodules=on-demand
+```
+
 ## 디렉터리 경계
 
 여기를 어기면 부모 레포와의 계약이 깨진다.
