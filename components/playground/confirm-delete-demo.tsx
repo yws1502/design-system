@@ -113,6 +113,7 @@ function LightweightPopover() {
               <ItemDescription>{file.meta}</ItemDescription>
             </ItemContent>
             <ConfirmDeletePopover
+              description={`${file.name}을 목록에서 제거합니다.`}
               trigger={
                 <Button variant="ghost" size="sm">
                   삭제
@@ -139,8 +140,8 @@ function LightweightPopover() {
         ) : null}
       </div>
       <p className="text-muted-foreground text-sm">
-        확인이 버튼 자리에서 뜨므로 마우스가 화면 중앙까지 이동하지 않는다. 무엇을
-        지우는지는 바로 옆 행이 이미 말하고 있어 대상 이름을 다시 적지 않는다.
+        확인이 버튼 자리에서 뜨므로 마우스가 화면 중앙까지 이동하지 않는다.
+        되돌릴 수 있거나 영향 범위가 작은 삭제에 쓴다.
       </p>
     </Example>
   );
