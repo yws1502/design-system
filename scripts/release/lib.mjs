@@ -1,13 +1,10 @@
 /**
- * 릴리스 자동화가 공유하는 규칙. 커밋 메시지 · PR 제목 · 버전 라벨 · CHANGELOG 가
+ * 릴리스 자동화가 공유하는 규칙. 커밋 메시지 · PR 제목 · 버전 라벨 · 릴리스 노트가
  * 모두 여기 정의를 따른다. 형식 자체(type · scope 목록)는 commitlint.config.mjs 가 검사한다.
  */
 
 /** 소비하는 쪽에 영향이 있는 scope. 이 scope 의 변경만 버전을 올린다. */
 export const CONSUMER_SCOPES = ["ui", "patterns", "tokens"];
-
-/** CHANGELOG 항목을 요구하는 scope. 갤러리는 버전은 안 올리지만 기록은 남긴다. */
-export const CHANGELOG_SCOPES = [...CONSUMER_SCOPES, "gallery"];
 
 export const VERSION_LABELS = ["major", "minor", "patch", "no-release"];
 
@@ -32,9 +29,20 @@ export function labelForTitle(title) {
   return parsed.type === "feat" ? "minor" : "patch";
 }
 
-export function needsChangelog(title) {
+/**
+ * 소비하는 쪽 scope 의 PR 은 본문 "해야 할 일"을 채워야 한다. 릴리스 노트는 PR 제목
+ * 목록뿐이라, 소비하는 쪽이 무엇을 해야 하는지는 노트의 PR 링크를 따라가 본문에서 읽는다.
+ */
+export function needsImpactNote(title) {
   const parsed = parseTitle(title);
-  return Boolean(parsed && CHANGELOG_SCOPES.includes(parsed.scope));
+  return Boolean(parsed && (parsed.breaking || CONSUMER_SCOPES.includes(parsed.scope)));
+}
+
+/** PR 템플릿의 `- **해야 할 일**: …` 이 채워져 있는지. "없음"도 채운 것으로 본다. */
+export function impactNoteFilled(body) {
+  const match = /\*\*해야 할 일\*\*\s*:[ \t]*(.*)/.exec(body ?? "");
+  const value = match?.[1].replace(/<!--.*?-->/g, "").trim();
+  return Boolean(value);
 }
 
 /** 라벨 여러 개 중 가장 큰 bump. */
@@ -53,36 +61,28 @@ export function bumpVersion(version, bump) {
   throw new Error(`올릴 수 없는 bump: ${bump}`);
 }
 
-const UNRELEASED = "## [Unreleased]\n";
-
-/** `[Unreleased]` 아래 내용. 비어 있으면 빈 문자열. */
-export function unreleasedBody(changelog) {
-  const start = changelog.indexOf(UNRELEASED);
-  if (start === -1) throw new Error("CHANGELOG.md 에 ## [Unreleased] 가 없다");
-  const rest = changelog.slice(start + UNRELEASED.length);
-  const end = rest.search(/^## \[/m);
-  return (end === -1 ? rest : rest.slice(0, end)).trim();
+/**
+ * GitHub 자동 생성 노트(`releases/generate-notes`)를 CHANGELOG 절로 다듬는다.
+ * 맨 위의 설정 파일 주석과 `## What's Changed` 제목은 `## [버전]` 아래에서 군더더기라 빼고(묶음 제목 `###`이 바로
+ * 그 아래 단계가 된다), 1인 레포라 매번 붙는 "New Contributors"도 뺀다.
+ */
+export function formatNotes(body) {
+  return body
+    .replace(/^<!--.*-->\n/gm, "")
+    .replace(/^## What's Changed\n/m, "")
+    .replace(/^## New Contributors\n[\s\S]*?(?=^\*\*Full Changelog|^## |(?![\s\S]))/m, "")
+    // 묶음 사이에 빈 줄이 없어 목록과 제목이 붙어 보인다
+    .replace(/\n+(?=^### )/gm, "\n\n")
+    .trim();
 }
 
-/**
- * `[Unreleased]` 를 `[version] - date` 로 바꾸고 빈 `[Unreleased]` 를 위에 새로 둔다.
- * 하단 비교 링크도 함께 갱신한다.
- */
-export function cutRelease(changelog, { version, previous, date, repoUrl }) {
-  let next = changelog.replace(
-    UNRELEASED,
-    `${UNRELEASED}\n## [${version}] - ${date}\n`
-  );
-  const unreleasedLink = `[Unreleased]: ${repoUrl}/compare/v${previous}...HEAD\n`;
-  if (!next.includes(unreleasedLink)) {
-    throw new Error(`CHANGELOG.md 하단에 이 링크가 없다:\n${unreleasedLink}`);
-  }
-  next = next.replace(
-    unreleasedLink,
-    `[Unreleased]: ${repoUrl}/compare/v${version}...HEAD\n` +
-      `[${version}]: ${repoUrl}/compare/v${previous}...v${version}\n`
-  );
-  return next;
+/** 첫 버전 절 앞에 새 절을 넣는다. 제목의 버전은 이전 태그와의 비교 링크다. */
+export function insertRelease(changelog, { version, previous, date, repoUrl, notes }) {
+  const first = changelog.search(/^## \[/m);
+  if (first === -1) throw new Error("CHANGELOG.md 에 ## [버전] 절이 없다");
+  const section =
+    `## [${version}](${repoUrl}/compare/v${previous}...v${version}) - ${date}\n\n${notes}\n\n`;
+  return changelog.slice(0, first) + section + changelog.slice(first);
 }
 
 /** `## [version]` 절의 본문. GitHub Release 노트로 쓴다. */

@@ -11,11 +11,10 @@ import { readFileSync, writeFileSync } from "node:fs";
 
 import {
   bumpVersion,
-  cutRelease,
+  formatNotes,
+  insertRelease,
   labelForTitle,
   maxBump,
-  releaseSection,
-  unreleasedBody,
   VERSION_LABELS,
 } from "./lib.mjs";
 
@@ -73,24 +72,34 @@ if (bump === "no-release") {
   fail("소비하는 쪽에 영향 있는 변경이 없다. AGENTS.md: 갤러리만 바뀌었다면 태그하지 않는다");
 }
 
-// 4. CHANGELOG 와 package.json 갱신
-const changelog = readFileSync("CHANGELOG.md", "utf8");
-if (!unreleasedBody(changelog)) fail("CHANGELOG.md 의 [Unreleased] 가 비어 있다");
-
+// 4. 릴리스 노트: 머지된 PR 목록을 GitHub 이 만든다(.github/release.yml 의 묶음).
+//    태그가 아직 없어도 target 으로 범위를 정할 수 있다. 같은 내용이 CHANGELOG 절과
+//    GitHub Release 본문이 된다.
 const version = bumpVersion(pkg.version, bump);
-const repoUrl = sh("gh", "repo", "view", "--json", "url", "--jq", ".url");
+const nameWithOwner = sh("gh", "repo", "view", "--json", "nameWithOwner", "--jq", ".nameWithOwner");
+const repoUrl = `https://github.com/${nameWithOwner}`;
+const notes = formatNotes(
+  sh(
+    "gh", "api", "-X", "POST", `repos/${nameWithOwner}/releases/generate-notes`,
+    "-f", `tag_name=v${version}`,
+    "-f", "target_commitish=main",
+    "-f", `previous_tag_name=${lastTag}`,
+    "--jq", ".body"
+  )
+);
 const date = new Date().toLocaleDateString("sv-SE"); // YYYY-MM-DD, 로컬 시간대
-const nextChangelog = cutRelease(changelog, {
+const nextChangelog = insertRelease(readFileSync("CHANGELOG.md", "utf8"), {
   version,
   previous: pkg.version,
   date,
   repoUrl,
+  notes,
 });
 const title = `chore(release): v${version} 릴리스`;
 
 console.log(`\n${bump}: ${pkg.version} → ${version}`);
 if (dryRun) {
-  console.log(`\n--- 릴리스 노트 ---\n${releaseSection(nextChangelog, version)}`);
+  console.log(`\n--- 릴리스 노트 ---\n${notes}`);
   process.exit(0);
 }
 
@@ -114,6 +123,9 @@ const body = [
   "",
   "## 릴리스 노트",
   "",
-  releaseSection(nextChangelog, version),
+  notes,
 ].join("\n");
-console.log(sh("gh", "pr", "create", "--base", "main", "--title", title, "--body", body));
+// release 라벨: 다음 릴리스 노트에서 이 PR 을 뺀다(.github/release.yml)
+console.log(
+  sh("gh", "pr", "create", "--base", "main", "--title", title, "--body", body, "--label", "release")
+);

@@ -1,36 +1,10 @@
 # Changelog
 
-이 레포는 다른 레포에서 서브모듈로 **소스를 가져다 쓴다.** 따라서 이 문서에서 가장 중요한 것은 `components/ui/`와 `components/patterns/`, 그리고 토큰의 변화다. 갤러리(`app/`, `components/playground/`) 변경은 소비하는 쪽에 영향이 없으므로 따로 묶어 둔다.
+이 레포는 다른 레포에서 서브모듈로 **소스를 가져다 쓴다.**
 
-형식은 [Keep a Changelog](https://keepachangelog.com/ko/1.1.0/)를 따르고, 버전은 [유의적 버전](https://semver.org/lang/ko/)을 따른다.
+v0.3.0부터 이 문서는 **릴리스할 때 자동으로 만들어진다.** 각 절은 그 버전에 머지된 PR 제목 목록이고, 버전 라벨에 따라 `Breaking changes` · `기능 추가` · `수정` · `갤러리 · 기타`로 묶인다. 같은 내용이 GitHub Releases 본문이다. **소비하는 쪽이 해야 할 일은 각 PR 본문의 "소비하는 쪽 영향"에 있다** — 목록의 PR 링크를 따라간다.
 
-## [Unreleased]
-
-### 소비하는 쪽에 영향 있음
-
-#### Added
-
-- **Button `destructive-soft` variant.** 연한 빨강 배경에 빨강 글자로, 바뀌기 전 `destructive`의 모양 그대로다. 목록 행의 "제거"처럼 반복되는 자리나, 확인 다이얼로그를 여는 진입점에 쓴다.
-
-#### Changed
-
-- **Button `destructive`를 Solid로 변경.** 연한 tint였던 기존 모양은 확인 다이얼로그 푸터에서 비활성 버튼처럼 보였고, Disabled 상태와도 잘 구분되지 않았다. 이제 꽉 찬 빨강에 흰 글자다(대비 light 4.77 · dark 6.00, AA 통과). 다크 모드는 밝은 `--destructive` 위에 흰 글자가 묻히지 않도록 60% 농도로 깐다. Hover는 light·dark 모두 **더 어둡게** 바뀐다 — 흔한 `/90`은 흰 바탕에 섞여 거의 티가 나지 않았다(명도 대비 1.05 → 약 1.25).
-  - **소비하는 쪽이 할 일:** `variant="destructive"`를 쓰는 곳을 훑어본다. 최종 확인(다이얼로그의 "삭제" 등)은 그대로 두고, 목록 행·인라인 동작·다이얼로그를 여는 버튼처럼 한 화면에 여러 개 놓이는 자리는 `variant="destructive-soft"`로 바꾸면 이전 모양이 유지된다. 같은 화면에 Solid가 여러 개면 위험 신호가 무뎌진다.
-- **`ConfirmDeleteDialog`: 입력 중에는 "일치하지 않습니다"를 띄우지 않음.** 한 글자씩 칠 때마다 메시지가 나타났다 사라지면서 다이얼로그 높이가 바뀌고 삭제 버튼이 위아래로 움직였다. 아직 다 치지도 않았는데 틀렸다고 알리는 것도 문제였다. 이제 입력 중에는 삭제 버튼 비활성과 placeholder로만 안내하고, Enter로 확정하려 했는데 틀렸을 때만 입력칸을 오류로 표시하고 메시지를 보인다. 다시 입력하면 메시지는 사라진다. API 변화 없음, 소비하는 쪽은 할 일 없음.
-- **`ConfirmDeleteDialog`: 입력칸 placeholder에 확인 문자열을 표시.** 위의 안내 문장까지 눈을 옮기지 않아도 무엇을 입력해야 하는지 바로 보인다. 값을 채워 주는 것은 아니라서 직접 입력해야 하는 확인 절차는 그대로다. API 변화 없음, 소비하는 쪽은 할 일 없음.
-
-### 갤러리 전용
-
-#### Added
-
-- 커밋 메시지 검사(husky + commitlint). `<type>(<scope>): <subject>` 형식과 scope를 강제한다. 이 레포에서 `pnpm install`할 때만 훅이 설치되므로 서브모듈로 가져다 쓰는 쪽에는 영향이 없다.
-- PR · 릴리스 자동화. `main`은 squash merge PR로만 바꾸고, PR 제목을 commitlint로 검사하고, 제목에서 버전 라벨(`major` · `minor` · `patch` · `no-release`)을 붙인다. `pnpm release`가 릴리스 PR을 만들고 머지되면 태그와 GitHub Release가 생긴다. 릴리스 노트는 이 CHANGELOG의 해당 절이다. 소비하는 쪽은 앞으로 GitHub Releases에서도 변경을 볼 수 있다.
-- 사이드바 제목 옆에 현재 버전(`package.json`의 `version`) 표시.
-- Form에 **Button — Destructive** 섹션 추가 — `destructive`(최종 확인)와 `destructive-soft`(목록·진입점)를 나란히 둔다. Button — Disabled에도 `destructive-soft` 추가. Confirm Delete 데모의 다이얼로그 진입 버튼은 `destructive-soft`로 바꿨다.
-
-#### Fixed
-
-- 사이드바 검색에서 Tab으로 지우기 버튼에 가면 검색어가 지워지고 포커스가 사라지던 문제. 선택값이 없는 Combobox는 팝업이 닫힐 때 입력을 빈 선택값으로 되돌리는데, 그 순간 지우기 버튼이 사라지면서 포커스도 잃었다. 입력값을 `SearchInput`의 `onValueChange`로만 바꾸고 Combobox의 되돌리기는 받지 않는다. 그 결과 Esc는 Combobox 표준대로 첫 번째에 목록을 닫고 두 번째에 지운다.
+v0.2.0 이전 절은 손으로 쓴 형식([Keep a Changelog](https://keepachangelog.com/ko/1.1.0/))을 그대로 둔다. 버전은 [유의적 버전](https://semver.org/lang/ko/)을 따른다.
 
 ## [0.2.0] - 2026-10-20
 
@@ -103,6 +77,5 @@ stock shadcn과 달라진 지점. upstream 갱신 시 충돌한다.
 - **`message` / `message-scroller` 예제.** shadcn 사이트 내부 모듈(`@/lib/ai`, `@/components/message-parts`)에 의존해 컴파일 불가. 컴포넌트 소스 자체는 `components/ui/`에 있다.
 - **테스트 프레임워크.** 시각적 쇼케이스라 유닛 테스트의 가치가 낮다. 검증은 `tsc --noEmit` + 브라우저 확인.
 
-[Unreleased]: https://github.com/yws1502/design-system/compare/v0.2.0...HEAD
 [0.2.0]: https://github.com/yws1502/design-system/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/yws1502/design-system/releases/tag/v0.1.0

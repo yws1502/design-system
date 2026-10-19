@@ -31,7 +31,7 @@ git checkout v0.1.0
 cd ../.. && git add vendor/design-system && git commit -m "chore: pin design-system to v0.1.0"
 ```
 
-올릴 때는 원하는 태그로 체크아웃하고 다시 커밋한다. 무엇이 바뀌었는지는 `CHANGELOG.md`를 본다.
+올릴 때는 원하는 태그로 체크아웃하고 다시 커밋한다. 무엇이 바뀌었는지는 GitHub Releases(또는 `CHANGELOG.md`)를 본다. 각 항목의 PR 본문에 소비하는 쪽이 할 일이 있다.
 
 `tsconfig.json`에서 경로를 잡거나 필요한 폴더만 복사해 쓴다.
 
@@ -117,4 +117,4 @@ pnpm dev        # http://localhost:3000
 | `docs/superpowers/specs/` | 설계 결정과 근거. **원본에서 벗어난 지점**과 그 이유가 여기 있다 |
 | `docs/superpowers/notes/` | 레지스트리 조사 결과 |
 | `AGENTS.md` | 이 레포에서 작업할 때의 규칙 |
-| `CHANGELOG.md` | 버전별 변경 이력. **소비하는 쪽에 영향 있는 변경**을 따로 묶어 둔다 |
+| `CHANGELOG.md` | 버전별 변경 이력. 릴리스할 때 머지된 PR 목록으로 자동 생성된다 |

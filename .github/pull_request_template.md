@@ -8,7 +8,7 @@
 
 ## 소비하는 쪽 영향
 
-<!-- ui · patterns · tokens 변경이 없으면 이 섹션을 지운다 -->
+<!-- ui · patterns · tokens 변경이 없으면 이 섹션을 지운다. 있으면 "해야 할 일"은 필수(없으면 "없음") — 릴리스 노트의 PR 링크를 따라와 여기서 읽는다 -->
 
 - **영향**:
 - **해야 할 일**:
@@ -25,4 +25,3 @@
 
 - [ ] `pnpm exec tsc --noEmit`
 - [ ] 브라우저에서 직접 눌러 봄 (light / dark)
-- [ ] `CHANGELOG.md` `[Unreleased]` 갱신 (ui · patterns · tokens · gallery)

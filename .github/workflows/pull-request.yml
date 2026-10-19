@@ -52,23 +52,14 @@ jobs:
           fi
           echo "label: $label" >> "$GITHUB_STEP_SUMMARY"
 
-  changelog:
-    name: Changelog
+  impact:
+    name: Consumer impact
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: CHANGELOG.md 에 항목이 있는지
+      # 릴리스 노트는 PR 제목 목록뿐이다. 소비하는 쪽이 할 일은 노트의 PR 링크를 따라와 본문에서 읽는다.
+      - name: 본문 "해야 할 일"이 채워졌는지
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
-          BASE: ${{ github.event.pull_request.base.sha }}
-        run: |
-          if [ "$(node scripts/release/label.mjs --needs-changelog "$PR_TITLE")" != "true" ]; then
-            echo "scope 가 ui · patterns · tokens · gallery 가 아니라 건너뛴다"
-            exit 0
-          fi
-          if ! git diff --name-only "$BASE"...HEAD | grep -qx CHANGELOG.md; then
-            echo "::error::CHANGELOG.md 의 [Unreleased] 에 항목을 추가한다 (AGENTS.md 참조)"
-            exit 1
-          fi
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: node scripts/release/check-impact.mjs
