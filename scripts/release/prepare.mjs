@@ -86,7 +86,7 @@ const nextChangelog = cutRelease(changelog, {
   date,
   repoUrl,
 });
-const title = `chore(release): release v${version}`;
+const title = `chore(release): v${version} 릴리스`;
 
 console.log(`\n${bump}: ${pkg.version} → ${version}`);
 if (dryRun) {

@@ -27,7 +27,7 @@ shadcn/ui(**Base UI**, `base-vega`) 컴포넌트를 담은 디자인 시스템�
 
 ## 커밋 메시지
 
-`<type>(<scope>): <subject>` — 예: `feat(gallery): use SearchInput in sidebar`. husky `commit-msg` 훅의 commitlint가 막는다(`commitlint.config.mjs`). 훅은 `pnpm install` 때 `prepare`로 설치된다.
+`<type>(<scope>): <subject>` — 예: `feat(gallery): 사이드바 검색에 SearchInput 적용`. **type과 scope는 영어, subject는 한국어로 쓴다.** PR 제목도 같다. husky `commit-msg` 훅의 commitlint가 막는다(`commitlint.config.mjs`). 훅은 `pnpm install` 때 `prepare`로 설치된다.
 
 | | 값 |
 |---|---|
