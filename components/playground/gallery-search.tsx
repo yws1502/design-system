@@ -76,8 +76,11 @@ export function GallerySearch() {
       // 선택 상태를 유지하지 않는다. 고르는 순간 이동하고 입력창은 비워야
       // 다음 검색을 바로 이어서 할 수 있다.
       value={null}
+      // 입력값은 SearchInput의 onValueChange로만 바꾼다. onInputValueChange는 받지 않는다 —
+      // 선택 상태가 없는(value={null}) Combobox는 팝업이 닫힐 때(Tab 등) 입력을
+      // 빈 선택값으로 되돌리는데, 그러면 Tab으로 지우기 버튼에 포커스가 가는 순간
+      // 값이 비고 버튼이 사라지면서 포커스까지 잃는다.
       inputValue={query}
-      onInputValueChange={setQuery}
       // 필터는 이 문자열로 걸린다. 컴포넌트·서브 예제·카테고리를 모두 넣어야
       // "Mul"이나 "Overlay" 같은 부분 검색이 전부 통한다.
       itemToStringValue={(entry: SearchEntry) =>
@@ -87,6 +90,8 @@ export function GallerySearch() {
       }
       onValueChange={(entry) => {
         if (!entry) return;
+        // 고르는 순간 이동하고 입력창은 비운다
+        setQuery("");
         router.push(entry.href);
         if (entry.example) {
           scrollToExample(entry.example);

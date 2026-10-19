@@ -14,6 +14,10 @@
 - PR · 릴리스 자동화. `main`은 squash merge PR로만 바꾸고, PR 제목을 commitlint로 검사하고, 제목에서 버전 라벨(`major` · `minor` · `patch` · `no-release`)을 붙인다. `pnpm release`가 릴리스 PR을 만들고 머지되면 태그와 GitHub Release가 생긴다. 릴리스 노트는 이 CHANGELOG의 해당 절이다. 소비하는 쪽은 앞으로 GitHub Releases에서도 변경을 볼 수 있다.
 - 사이드바 제목 옆에 현재 버전(`package.json`의 `version`) 표시.
 
+#### Fixed
+
+- 사이드바 검색에서 Tab으로 지우기 버튼에 가면 검색어가 지워지고 포커스가 사라지던 문제. 선택값이 없는 Combobox는 팝업이 닫힐 때 입력을 빈 선택값으로 되돌리는데, 그 순간 지우기 버튼이 사라지면서 포커스도 잃었다. 입력값을 `SearchInput`의 `onValueChange`로만 바꾸고 Combobox의 되돌리기는 받지 않는다. 그 결과 Esc는 Combobox 표준대로 첫 번째에 목록을 닫고 두 번째에 지운다.
+
 ## [0.2.0] - 2026-10-20
 
 ### 소비하는 쪽에 영향 있음
