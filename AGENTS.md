@@ -143,7 +143,7 @@ git diff --stat components/ui/                # 비어 있어야 한다
 
 원칙은 원본 유지지만, 필요하면 바꾸되 **반드시 스펙의 "원본에서 의도적으로 벗어난 지점" 표에 기록한다.** 여기를 고치는 것은 곧 부모 레포의 소스를 바꾸는 것이다.
 
-현재 등재된 것은 `components/ui/` 5개(`sheet` · `alert` · `badge` · `toast` · `sonner`), 예제 1개(`sheet-example`), 토큰 1건(`globals.css`).
+현재 등재된 것은 `components/ui/` 5개(`sheet` · `alert` · `badge` · `toast` · `sonner`), 예제 1개(`sheet-example`), `globals.css` 2건(상태 토큰 · 버튼 커서).
 
 ```bash
 git log --diff-filter=M --format="" --name-only -- components/ui 'components/*-example.tsx' | sort -u

@@ -157,4 +157,18 @@
   html {
     @apply font-sans;
   }
+  /*
+   * Tailwind v4 preflight 가 버튼의 cursor: pointer 를 뺐다. v3 동작으로 되돌린다.
+   * Base UI 의 Checkbox · Radio · Switch 는 <button> 이 아니라 role 을 단 <span> 이고,
+   * 비활성도 disabled 속성 대신 aria-disabled 로 표시하므로 함께 잡는다.
+   */
+  :where(
+      button,
+      [role="button"],
+      [role="checkbox"],
+      [role="radio"],
+      [role="switch"]
+    ):not(:disabled, [aria-disabled="true"]) {
+    cursor: pointer;
+  }
 }
