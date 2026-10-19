@@ -25,6 +25,17 @@ shadcn/ui(**Base UI**, `base-vega`) 컴포넌트를 담은 디자인 시스템�
 
 문서·주석만 고쳤거나 리팩터링으로 동작이 그대로면 남기지 않아도 된다.
 
+## 커밋 메시지
+
+`<type>(<scope>): <subject>` — 예: `feat(gallery): use SearchInput in sidebar`. husky `commit-msg` 훅의 commitlint가 막는다(`commitlint.config.mjs`). 훅은 `pnpm install` 때 `prepare`로 설치된다.
+
+| | 값 |
+|---|---|
+| type | `feat` `fix` `style` `docs` `chore` `refactor` `revert` |
+| scope (필수) | `ui` `patterns` `tokens` — 소비하는 쪽에 영향 있음<br>`gallery` — 갤러리 전용<br>`docs` `deps` `repo` `release` |
+
+scope는 CHANGELOG의 "소비하는 쪽에 영향 있음" / "갤러리 전용" 구분과 맞춘다. 한 커밋에 두 쪽이 섞이면 나눠서 커밋한다.
+
 ## 버전 태그
 
 서브모듈로 쓰는 쪽은 커밋 SHA가 아니라 **태그에 고정**한다. 태그가 없으면 소비자는 `main`을 따라갈 수밖에 없고, 그러면 우리가 뭘 바꾸든 즉시 끌려간다.
@@ -45,7 +56,7 @@ shadcn/ui(**Base UI**, `base-vega`) 컴포넌트를 담은 디자인 시스템�
 # 1. CHANGELOG.md 의 [Unreleased] 를 [x.y.z] - YYYY-MM-DD 로 바꾸고
 #    새 [Unreleased] 를 위에 만든다. 하단 비교 링크도 갱신한다.
 # 2. 커밋
-git commit -m "chore: release vx.y.z"
+git commit -m "chore(release): release vx.y.z"
 
 # 3. 주석 있는 태그 (경량 태그는 쓰지 않는다 — 작성자·날짜가 남지 않는다)
 git tag -a vx.y.z -m "vx.y.z"

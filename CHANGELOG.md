@@ -6,6 +6,12 @@
 
 ## [Unreleased]
 
+### 갤러리 전용
+
+#### Added
+
+- 커밋 메시지 검사(husky + commitlint). `<type>(<scope>): <subject>` 형식과 scope를 강제한다. 이 레포에서 `pnpm install`할 때만 훅이 설치되므로 서브모듈로 가져다 쓰는 쪽에는 영향이 없다.
+
 ## [0.2.0] - 2026-10-20
 
 ### 소비하는 쪽에 영향 있음
