@@ -6,6 +6,32 @@
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-20
+
+### 소비하는 쪽에 영향 있음
+
+#### Added
+
+- **`SearchInput` 패턴** (`components/patterns/search-input.tsx`). 왼쪽 돋보기, 값이 있을 때만 오른쪽에 나타나는 지우기 아이콘 버튼, Esc로 지우기를 묶었다. `type="search"`의 브라우저 기본 지우기 버튼은 엔진마다 모양이 다르고 Firefox에는 없어서 숨기고 직접 그린다. 값이 비어 있을 때의 Esc는 가로채지 않으므로 다이얼로그 안에서 써도 Esc 닫기가 그대로 동작한다.
+  - 비제어(`defaultValue`)·제어(`value` + `onValueChange`) 둘 다 된다. 지우기도 `onValueChange("")`로 알린다.
+  - 나머지 props는 바깥 div가 아니라 안쪽 `<input>`에 붙는다. 그래서 Base UI 입력의 `render`에 넘길 수 있다 — `<ComboboxPrimitive.Input render={<SearchInput onValueChange={setQuery} />} />`. 이때 Combobox 루트의 `inputValue`를 같은 상태로 제어해야 지우기 버튼이 먹는다. 실제 사용 예는 갤러리 사이드바(`components/playground/gallery-search.tsx`).
+
+#### Fixed
+
+- **클릭할 수 있는 컴포넌트에 `cursor: pointer` 복원** (`app/globals.css`). Tailwind v4 preflight가 버튼의 pointer 커서를 빼서 Button·Select 트리거 등이 화살표 커서로 나왔다. Base UI의 Checkbox·Radio·Switch는 `<button>`이 아니라 `role`을 단 `<span>`이므로 `button`, `[role="button"]`, `[role="checkbox"]`, `[role="radio"]`, `[role="switch"]`를 함께 잡는다. 비활성은 `:disabled`와 `[aria-disabled="true"]` 둘 다 제외한다(Base UI는 span에 `disabled` 속성을 달 수 없어 `aria-disabled`를 쓴다). `:where()`로 감싸 특이도가 0이므로 `cursor-*` 유틸리티로 언제든 덮어쓸 수 있다. 소비하는 앱에 같은 규칙이 이미 있으면 지워도 된다.
+
+### 갤러리 전용
+
+#### Added
+
+- 사이드바 검색창을 `SearchInput`으로 교체. 돋보기·지우기 버튼·Esc 지우기가 생겼다. 팝업은 입력 그룹 전체 폭에 맞춘다.
+- Form에 **Search Input** 섹션 추가 — 비제어·제어·기본값·비활성.
+- Form에 **Button — Disabled** 섹션 추가. 공식 `button-example`에 disabled 케이스가 없어 비활성 모습을 확인할 수 없었다. 예제 원본은 두고 `components/playground/button-disabled-demo.tsx`로 따로 전시한다.
+
+#### Fixed
+
+- 섹션 제목과 예제 카드 사이의 큰 빈 공간을 없앴다. `ExampleWrapper`의 `min-h-screen`이 예제 하나가 한 화면을 다 쓰는 shadcn 사이트를 전제로 해서, 섹션을 쌓는 갤러리에서는 카드가 블록 세로 중앙으로 밀려 내려갔다. 원본 `example.tsx`는 그대로 두고 `Section`에서 `min-h-0`으로 덮어쓴다.
+
 ## [0.1.0] - 2026-08-06
 
 첫 구축. shadcn/ui 컴포넌트 60개와 이를 검수하는 갤러리를 세웠다.
@@ -51,5 +77,6 @@ stock shadcn과 달라진 지점. upstream 갱신 시 충돌한다.
 - **`message` / `message-scroller` 예제.** shadcn 사이트 내부 모듈(`@/lib/ai`, `@/components/message-parts`)에 의존해 컴파일 불가. 컴포넌트 소스 자체는 `components/ui/`에 있다.
 - **테스트 프레임워크.** 시각적 쇼케이스라 유닛 테스트의 가치가 낮다. 검증은 `tsc --noEmit` + 브라우저 확인.
 
-[Unreleased]: https://github.com/yws1502/design-system/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/yws1502/design-system/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/yws1502/design-system/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/yws1502/design-system/releases/tag/v0.1.0
