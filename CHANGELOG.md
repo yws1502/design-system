@@ -6,6 +6,12 @@
 
 ## [Unreleased]
 
+### 소비하는 쪽에 영향 있음
+
+#### Fixed
+
+- **`SearchInput`: 한글 조합 중 Esc가 검색어를 지우던 문제.** 조합 중의 Esc는 IME가 조합을 취소하는 키인데, `SearchInput`이 이를 지우기로 가로채서 입력 전체가 사라질 수 있었다. 조합 중(`isComposing` 또는 Safari의 `keyCode 229`)에는 Esc를 가로채지 않는다. 소비하는 쪽은 할 일 없음.
+
 ### 갤러리 전용
 
 #### Added

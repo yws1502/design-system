@@ -93,6 +93,9 @@ export function SearchInput({
         onKeyDown={(event) => {
           onKeyDown?.(event);
           if (event.defaultPrevented) return;
+          // 한글 조합 중의 Esc는 IME가 조합을 취소하는 키다. 여기서 지우면 입력 전체가
+          // 날아간다. Safari는 조합 중 keydown에 isComposing 대신 keyCode 229만 준다.
+          if (event.nativeEvent.isComposing || event.keyCode === 229) return;
           // 값이 있을 때만 가로챈다. 빈 상태의 Esc는 다이얼로그 닫기 등
           // 바깥 동작에 그대로 넘겨야 한다.
           if (event.key === "Escape" && current) {
