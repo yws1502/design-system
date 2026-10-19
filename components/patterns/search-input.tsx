@@ -44,6 +44,7 @@ export function SearchInput({
   onValueChange,
   onChange,
   onKeyDown,
+  onCompositionEnd,
   disabled,
   ref,
   className,
@@ -52,6 +53,7 @@ export function SearchInput({
   ...props
 }: SearchInputProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const clearAfterCompositionRef = React.useRef(false);
   const [uncontrolled, setUncontrolled] = React.useState(defaultValue);
   const isControlled = value !== undefined;
   const current = isControlled ? value : uncontrolled;
@@ -91,14 +93,17 @@ export function SearchInput({
           onValueChange?.(event.target.value);
         }}
         onKeyDown={(event) => {
-          // 한글 조합 중의 Esc는 IME 몫이다. 지우지 않을 뿐 아니라 preventDefault도
-          // 해야 한다 — type="search"는 Esc로 값을 비우는 브라우저 기본 동작이 있어서,
-          // 그대로 두면 확정된 글자("한")만 지워지고 조합 중인 글자("그")가 남는다.
-          // 바깥 핸들러(Base UI Combobox 등)도 조합 중 Esc를 지우기로 처리하므로 넘기지 않는다.
+          // 한글 조합 중의 Esc도 전체를 지운다. 다만 조합 중에 바로 지우면 IME가 뒤이어
+          // 조합 중이던 글자("그")를 확정해서 그것만 남는다. 그래서 Esc로 조합이 끝나기를
+          // 기다렸다가(compositionend) 지운다. preventDefault는 type="search"의 브라우저
+          // 기본 지우기(확정된 글자만 지움)를 막는다. 바깥 핸들러(Base UI Combobox 등)도
+          // 조합 중 Esc를 제각각 처리하므로 넘기지 않는다.
           // Safari는 조합 중 keydown에 isComposing 대신 keyCode 229만 준다.
           if (event.nativeEvent.isComposing || event.keyCode === 229) {
             if (event.key === "Escape") {
               event.preventDefault();
+              event.stopPropagation();
+              clearAfterCompositionRef.current = true;
               return;
             }
             onKeyDown?.(event);
@@ -111,6 +116,13 @@ export function SearchInput({
           if (event.key === "Escape" && current) {
             event.preventDefault();
             event.stopPropagation();
+            clear();
+          }
+        }}
+        onCompositionEnd={(event) => {
+          onCompositionEnd?.(event);
+          if (clearAfterCompositionRef.current) {
+            clearAfterCompositionRef.current = false;
             clear();
           }
         }}
