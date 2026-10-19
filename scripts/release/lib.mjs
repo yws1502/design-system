@@ -63,13 +63,16 @@ export function bumpVersion(version, bump) {
 
 /**
  * GitHub 자동 생성 노트(`releases/generate-notes`)를 CHANGELOG 절로 다듬는다.
- * `## What's Changed` 제목은 `## [버전]` 아래에서 군더더기라 빼고(묶음 제목 `###`이 바로
+ * 맨 위의 설정 파일 주석과 `## What's Changed` 제목은 `## [버전]` 아래에서 군더더기라 빼고(묶음 제목 `###`이 바로
  * 그 아래 단계가 된다), 1인 레포라 매번 붙는 "New Contributors"도 뺀다.
  */
 export function formatNotes(body) {
   return body
+    .replace(/^<!--.*-->\n/gm, "")
     .replace(/^## What's Changed\n/m, "")
     .replace(/^## New Contributors\n[\s\S]*?(?=^\*\*Full Changelog|^## |(?![\s\S]))/m, "")
+    // 묶음 사이에 빈 줄이 없어 목록과 제목이 붙어 보인다
+    .replace(/\n+(?=^### )/gm, "\n\n")
     .trim();
 }
 
