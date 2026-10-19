@@ -121,6 +121,9 @@ export function ConfirmDeleteDialog({
           <Input
             id={inputId}
             value={value}
+            // 입력할 값을 입력칸 안에도 보여 준다. 안내 문장까지 눈을 옮기지 않아도
+            // 무엇을 쳐야 하는지 알 수 있다. 채워 주는 게 아니라서 확인 절차는 그대로다.
+            placeholder={confirmValue}
             autoComplete="off"
             aria-labelledby={hintId}
             aria-invalid={invalid || undefined}
