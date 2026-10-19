@@ -6,6 +6,22 @@ v0.3.0부터 이 문서는 **릴리스할 때 자동으로 만들어진다.** �
 
 v0.2.0 이전 절은 손으로 쓴 형식([Keep a Changelog](https://keepachangelog.com/ko/1.1.0/))을 그대로 둔다. 버전은 [유의적 버전](https://semver.org/lang/ko/)을 따른다.
 
+## [0.3.0](https://github.com/yws1502/design-system/compare/v0.2.0...v0.3.0) - 2026-10-20
+
+### 기능 추가
+* feat(ui): Button destructive를 Solid로 바꾸고 destructive-soft variant 추가 by @yws1502 in https://github.com/yws1502/design-system/pull/6
+
+### 수정
+* style(patterns): ConfirmDeleteDialog 입력칸 placeholder에 확인 문자열 표시 by @yws1502 in https://github.com/yws1502/design-system/pull/4
+* fix(patterns): ConfirmDeleteDialog 입력 중 불일치 메시지로 레이아웃이 흔들리던 문제 수정 by @yws1502 in https://github.com/yws1502/design-system/pull/5
+
+### 갤러리 · 기타
+* chore(repo): 커밋 메시지 검사, PR 검사, 릴리스 자동화 추가 by @yws1502 in https://github.com/yws1502/design-system/pull/1
+* fix(gallery): 사이드바 검색에서 Tab으로 지우기 버튼에 가면 검색어가 사라지던 문제 수정 by @yws1502 in https://github.com/yws1502/design-system/pull/3
+* chore(repo): 릴리스 노트를 머지된 PR 목록으로 자동 생성 by @yws1502 in https://github.com/yws1502/design-system/pull/8
+
+**Full Changelog**: https://github.com/yws1502/design-system/compare/v0.2.0...v0.3.0
+
 ## [0.2.0] - 2026-10-20
 
 ### 소비하는 쪽에 영향 있음
