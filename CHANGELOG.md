@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-20
+
 ### 소비하는 쪽에 영향 있음
 
 #### Added
@@ -103,6 +105,7 @@ stock shadcn과 달라진 지점. upstream 갱신 시 충돌한다.
 - **`message` / `message-scroller` 예제.** shadcn 사이트 내부 모듈(`@/lib/ai`, `@/components/message-parts`)에 의존해 컴파일 불가. 컴포넌트 소스 자체는 `components/ui/`에 있다.
 - **테스트 프레임워크.** 시각적 쇼케이스라 유닛 테스트의 가치가 낮다. 검증은 `tsc --noEmit` + 브라우저 확인.
 
-[Unreleased]: https://github.com/yws1502/design-system/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/yws1502/design-system/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/yws1502/design-system/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/yws1502/design-system/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/yws1502/design-system/releases/tag/v0.1.0
