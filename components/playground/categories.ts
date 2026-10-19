@@ -46,8 +46,10 @@ export const categories: Category[] = [
     icon: SquarePenIcon,
     items: [
       { name: "button", title: "Button" },
+      { name: "button-disabled", title: "Button — Disabled" },
       { name: "button-group", title: "Button Group" },
       { name: "input", title: "Input" },
+      { name: "search-input", title: "Search Input" },
       { name: "label", title: "Label" },
       { name: "textarea", title: "Textarea" },
       { name: "native-select", title: "Native Select" },

@@ -7,11 +7,13 @@ import {
   searchIndex,
   type SearchEntry,
 } from "@/components/playground/search-index";
+import { Combobox as ComboboxPrimitive } from "@base-ui/react";
+
+import { SearchInput } from "@/components/patterns/search-input";
 import {
   Combobox,
   ComboboxContent,
   ComboboxEmpty,
-  ComboboxInput,
   ComboboxItem,
   ComboboxList,
 } from "@/components/ui/combobox";
@@ -63,6 +65,10 @@ function scrollToExample(title: string) {
 
 export function GallerySearch() {
   const router = useRouter();
+  // SearchInput의 지우기 버튼이 값을 비울 수 있도록 입력값을 여기서 든다.
+  const [query, setQuery] = React.useState("");
+  // 팝업 기본 기준은 <input>이라 돋보기 폭만큼 오른쪽으로 밀린다. 입력 그룹 전체에 맞춘다.
+  const anchorRef = React.useRef<HTMLDivElement>(null);
 
   return (
     <Combobox
@@ -70,6 +76,8 @@ export function GallerySearch() {
       // 선택 상태를 유지하지 않는다. 고르는 순간 이동하고 입력창은 비워야
       // 다음 검색을 바로 이어서 할 수 있다.
       value={null}
+      inputValue={query}
+      onInputValueChange={setQuery}
       // 필터는 이 문자열로 걸린다. 컴포넌트·서브 예제·카테고리를 모두 넣어야
       // "Mul"이나 "Overlay" 같은 부분 검색이 전부 통한다.
       itemToStringValue={(entry: SearchEntry) =>
@@ -85,10 +93,15 @@ export function GallerySearch() {
         }
       }}
     >
-      <ComboboxInput placeholder="컴포넌트 검색" showTrigger={false} />
+      <div ref={anchorRef}>
+        <ComboboxPrimitive.Input
+          placeholder="컴포넌트 검색"
+          render={<SearchInput onValueChange={setQuery} />}
+        />
+      </div>
       {/* 높이 제한은 ComboboxList가 자체 max-h로 건다. 여기 max-h를 걸어도
           팝업에만 붙어 아무 일도 하지 않는다. */}
-      <ComboboxContent>
+      <ComboboxContent anchor={anchorRef}>
         <ComboboxEmpty>결과가 없습니다.</ComboboxEmpty>
         <ComboboxList>
           {(entry: SearchEntry) => (

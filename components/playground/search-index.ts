@@ -34,6 +34,13 @@ export const searchIndex: SearchEntry[] = [
     "href": "/playground/form#button"
   },
   {
+    "key": "form#button-disabled",
+    "component": "Button — Disabled",
+    "example": null,
+    "category": "Form",
+    "href": "/playground/form#button-disabled"
+  },
+  {
     "key": "form#button-group",
     "component": "Button Group",
     "example": null,
@@ -46,6 +53,13 @@ export const searchIndex: SearchEntry[] = [
     "example": null,
     "category": "Form",
     "href": "/playground/form#input"
+  },
+  {
+    "key": "form#search-input",
+    "component": "Search Input",
+    "example": null,
+    "category": "Form",
+    "href": "/playground/form#search-input"
   },
   {
     "key": "form#label",
@@ -382,6 +396,13 @@ export const searchIndex: SearchEntry[] = [
     "example": null,
     "category": "Feedback",
     "href": "/playground/feedback#sonner"
+  },
+  {
+    "key": "feedback#status-variants",
+    "component": "상태 variant",
+    "example": null,
+    "category": "Feedback",
+    "href": "/playground/feedback#status-variants"
   },
   {
     "key": "feedback#toast-status",
@@ -2470,6 +2491,20 @@ export const searchIndex: SearchEntry[] = [
     "href": "/playground/navigation#pagination"
   },
   {
+    "key": "form#button-disabled::Variants",
+    "component": "Button — Disabled",
+    "example": "Variants",
+    "category": "Form",
+    "href": "/playground/form#button-disabled"
+  },
+  {
+    "key": "form#button-disabled::With Icon",
+    "component": "Button — Disabled",
+    "example": "With Icon",
+    "category": "Form",
+    "href": "/playground/form#button-disabled"
+  },
+  {
     "key": "overlay#confirm-delete::트리거로 열기",
     "component": "Confirm Delete",
     "example": "트리거로 열기",
@@ -2489,6 +2524,48 @@ export const searchIndex: SearchEntry[] = [
     "example": "가벼운 삭제 — Popover",
     "category": "Overlay",
     "href": "/playground/overlay#confirm-delete"
+  },
+  {
+    "key": "form#search-input::Basic",
+    "component": "Search Input",
+    "example": "Basic",
+    "category": "Form",
+    "href": "/playground/form#search-input"
+  },
+  {
+    "key": "form#search-input::Controlled",
+    "component": "Search Input",
+    "example": "Controlled",
+    "category": "Form",
+    "href": "/playground/form#search-input"
+  },
+  {
+    "key": "form#search-input::Default Value",
+    "component": "Search Input",
+    "example": "Default Value",
+    "category": "Form",
+    "href": "/playground/form#search-input"
+  },
+  {
+    "key": "form#search-input::Disabled",
+    "component": "Search Input",
+    "example": "Disabled",
+    "category": "Form",
+    "href": "/playground/form#search-input"
+  },
+  {
+    "key": "feedback#status-variants::Alert",
+    "component": "상태 variant",
+    "example": "Alert",
+    "category": "Feedback",
+    "href": "/playground/feedback#status-variants"
+  },
+  {
+    "key": "feedback#status-variants::Badge",
+    "component": "상태 variant",
+    "example": "Badge",
+    "category": "Feedback",
+    "href": "/playground/feedback#status-variants"
   },
   {
     "key": "feedback#toast-status::Base UI Toast — 상태",

@@ -10,6 +10,8 @@ import SwitchExample from "@/components/switch-example";
 import TextareaExample from "@/components/textarea-example";
 import ToggleExample from "@/components/toggle-example";
 import ToggleGroupExample from "@/components/toggle-group-example";
+import ButtonDisabledDemo from "@/components/playground/button-disabled-demo";
+import SearchInputDemo from "@/components/playground/search-input-demo";
 import { Section } from "@/components/playground/section";
 
 export default function FormPage() {
@@ -18,11 +20,25 @@ export default function FormPage() {
       <Section id="button" title="Button">
         <ButtonExample />
       </Section>
+      <Section
+        id="button-disabled"
+        title="Button — Disabled"
+        description="공식 예제에 disabled 케이스가 없어 따로 전시한다. 모든 variant가 opacity 50%로 흐려지고 클릭·hover를 받지 않는다."
+      >
+        <ButtonDisabledDemo />
+      </Section>
       <Section id="button-group" title="Button Group">
         <ButtonGroupExample />
       </Section>
       <Section id="input" title="Input">
         <InputExample />
+      </Section>
+      <Section
+        id="search-input"
+        title="Search Input"
+        description="패턴(components/patterns/search-input). 값이 있으면 오른쪽에 지우기 아이콘 버튼이 나오고, Esc로도 지운다. 사이드바 검색창이 이 컴포넌트를 쓴다."
+      >
+        <SearchInputDemo />
       </Section>
       <Section id="label" title="Label">
         <LabelExample />
