@@ -27,7 +27,7 @@ shadcn/ui(**Base UI**, `base-vega`) 컴포넌트를 담은 디자인 시스템�
 | | 값 |
 |---|---|
 | type | `feat` `fix` `style` `docs` `chore` `refactor` `revert` |
-| scope (필수) | `ui` `patterns` `tokens` — 소비하는 쪽에 영향 있음<br>`gallery` — 갤러리 전용<br>`docs` `deps` `repo` `release` |
+| scope (필수) | `ui` `patterns` `tokens` — 소비하는 쪽에 영향 있음<br>`gallery` — 갤러리 전용<br>`docs` `deps` `deps-dev` `repo` `release` |
 
 scope로 버전 라벨이 정해지고 릴리스 노트의 묶음이 갈린다. 소비하는 쪽 변경과 갤러리 변경이 섞이면 PR을 나눈다.
 
@@ -77,6 +77,14 @@ gh pr merge --squash      # 머지 → 태그 vx.y.z + GitHub Release 자동 생
 
   라벨이 틀렸으면 손으로 바꾼다. 제목을 고칠 때만 다시 계산하므로 손으로 바꾼 라벨은 유지된다.
 - scope가 `ui` · `patterns` · `tokens`(또는 `!`)이면 CI가 **PR 본문 "해야 할 일"을 요구**한다.
+- CI는 **타입체크와 `pnpm build`**도 돌린다. 통과해도 UI는 브라우저에서 확인한다(위 "빌드 통과는 동작을 뜻하지 않는다").
+- GitHub Revert 버튼으로 만든 `Revert "…"` PR은 되돌린 PR의 scope가 소비하는 쪽이면 `patch`다. 이미 릴리스된 API를 없애는 되돌림이면 라벨을 손으로 `major`로 바꾼다.
+
+## 의존성 · 보안
+
+- **Dependabot**(`.github/dependabot.yml`)이 매주 월요일 npm · GitHub Actions 업데이트 PR을 연다. minor · patch는 묶고 메이저는 하나씩 온다. 제목은 `chore(deps): …` · `chore(deps-dev): …`, 라벨은 `no-release`. 메이저(특히 `next` · `react` · `@base-ui/react` · `tailwindcss`)는 브라우저에서 확인한 뒤 머지한다.
+- **Dependabot 보안 알림 · 보안 업데이트**는 저장소 설정에서 켜 두었다.
+- **GitGuardian**(GitHub App)이 PR마다 비밀값 유출을 검사한다(`GitGuardian Security Checks`).
 
 ## 서브모듈에서 이 레포를 고칠 때
 

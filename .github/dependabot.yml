@@ -1,0 +1,43 @@
+# 의존성 업데이트 PR. 제목이 commitlint 를 통과하도록 `chore(deps): …` · `chore(deps-dev): …` 로 쓰고,
+# Dependabot PR 은 워크플로 토큰이 읽기 전용이라 버전 라벨도 여기서 붙인다.
+# 의존성은 갤러리 빌드용이고 소비하는 쪽은 자기 package.json 을 쓰므로 no-release.
+# 메이저는 묶지 않는다 — 하나씩 올려 브라우저에서 확인한다 (특히 next · react · @base-ui/react · tailwindcss).
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Asia/Seoul
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      prefix-development: chore
+      include: scope
+    labels:
+      - no-release
+      - dependencies
+    groups:
+      dependencies:
+        dependency-type: production
+        update-types: [minor, patch]
+      dev-dependencies:
+        dependency-type: development
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Asia/Seoul
+    commit-message:
+      prefix: chore
+      include: scope
+    labels:
+      - no-release
+      - dependencies
+    groups:
+      actions:
+        patterns: ["*"]

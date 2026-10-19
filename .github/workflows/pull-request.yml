@@ -15,9 +15,9 @@ jobs:
     name: PR title
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: pnpm
@@ -28,14 +28,34 @@ jobs:
           PR_TITLE: ${{ github.event.pull_request.title }}
         run: printf '%s\n' "$PR_TITLE" | pnpm exec commitlint --verbose
 
+  # 제목과 상관없이 코드가 컴파일되는지. 빌드가 통과해도 동작을 보장하지는 않는다(AGENTS.md) —
+  # UI 변경은 여전히 브라우저에서 확인한다.
+  code:
+    name: Typecheck & build
+    if: github.event.action != 'edited'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # LayoutProps 같은 라우트 타입은 Next 가 생성한다. 로컬에선 dev 서버가 만들어 두지만
+      # CI 엔 없으므로 typegen 을 먼저 돌린다.
+      - run: pnpm exec next typegen && pnpm exec tsc --noEmit
+      - run: pnpm build
+
   label:
     name: Version label
     needs: title
     # 제목이 바뀔 때만 다시 붙인다. 손으로 바꾼 라벨을 커밋 push 마다 덮어쓰지 않는다.
-    if: github.event.action == 'opened' || github.event.action == 'reopened' || github.event.changes.title
+    # Dependabot PR 은 토큰이 읽기 전용이라 라벨을 못 붙인다 — dependabot.yml 이 직접 붙인다.
+    if: github.actor != 'dependabot[bot]' && (github.event.action == 'opened' || github.event.action == 'reopened' || github.event.changes.title)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: apply
         env:
           GH_TOKEN: ${{ github.token }}
@@ -56,7 +76,7 @@ jobs:
     name: Consumer impact
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       # 릴리스 노트는 PR 제목 목록뿐이다. 소비하는 쪽이 할 일은 노트의 PR 링크를 따라와 본문에서 읽는다.
       - name: 본문 "해야 할 일"이 채워졌는지
         env:

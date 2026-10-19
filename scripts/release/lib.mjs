@@ -20,8 +20,22 @@ export function parseTitle(title) {
   return { type: match[1], scope: match[2], breaking: Boolean(match[3]) };
 }
 
+/**
+ * GitHub Revert 버튼이 만드는 `Revert "feat(ui): …"` 는 되돌린 PR 의 제목으로 분류한다.
+ * 소비하는 쪽 변경을 되돌리는 것도 소비하는 쪽에는 변경이라 patch 다(되돌린 게 기능이어도
+ * 아직 릴리스 전이면 소비하는 쪽은 받은 적이 없다). 이미 릴리스된 API 를 없애는 되돌림이면
+ * 라벨을 손으로 major 로 바꾼다.
+ */
+function revertedTitle(title) {
+  return /^Revert "(.+)"/.exec(title.trim())?.[1] ?? null;
+}
+
 /** PR 제목에서 버전 라벨을 정한다. AGENTS.md 의 "버전 태그" 표를 코드로 옮긴 것. */
 export function labelForTitle(title) {
+  const reverted = revertedTitle(title);
+  if (reverted) {
+    return labelForTitle(reverted) === "no-release" ? "no-release" : "patch";
+  }
   const parsed = parseTitle(title);
   if (!parsed) return "no-release";
   if (parsed.breaking) return "major";
@@ -34,7 +48,7 @@ export function labelForTitle(title) {
  * 목록뿐이라, 소비하는 쪽이 무엇을 해야 하는지는 노트의 PR 링크를 따라가 본문에서 읽는다.
  */
 export function needsImpactNote(title) {
-  const parsed = parseTitle(title);
+  const parsed = parseTitle(revertedTitle(title) ?? title);
   return Boolean(parsed && (parsed.breaking || CONSUMER_SCOPES.includes(parsed.scope)));
 }
 
