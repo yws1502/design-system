@@ -23,14 +23,19 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 
-export function GallerySidebar() {
+// 서버 레이아웃에서 package.json 의 version 을 받는다. 클라이언트에서 직접 import 하면
+// package.json 전체가 번들에 들어간다.
+export function GallerySidebar({ version }: { version: string }) {
   const pathname = usePathname()
 
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <div className="flex h-8 items-center px-2 text-sm font-semibold group-data-[collapsible=icon]:hidden">
-          Design System
+        <div className="flex h-8 items-center gap-1.5 px-2 group-data-[collapsible=icon]:hidden">
+          <span className="text-sm font-semibold">Design System</span>
+          <span className="text-muted-foreground font-mono text-xs">
+            v{version}
+          </span>
         </div>
         {/* 아이콘 모드에서는 폭이 없어 검색창을 숨긴다 */}
         <div className="px-1 group-data-[collapsible=icon]:hidden">

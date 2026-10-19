@@ -1,6 +1,6 @@
 {
   "name": "design-system",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,7 +10,8 @@
     "gen:search-index": "node scripts/gen-search-index.mjs",
     "predev": "node scripts/gen-search-index.mjs",
     "prebuild": "node scripts/gen-search-index.mjs",
-    "prepare": "husky"
+    "prepare": "husky",
+    "release": "node scripts/release/prepare.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
