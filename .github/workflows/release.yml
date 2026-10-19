@@ -15,20 +15,26 @@ jobs:
     if: "startsWith(github.event.head_commit.message, 'chore(release): v')"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: 태그 · GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           version=$(node -p "require('./package.json').version")
           tag="v$version"
-          if git ls-remote --exit-code --tags origin "refs/tags/$tag" > /dev/null; then
-            echo "::error::$tag 가 이미 있다"
-            exit 1
+          # 재실행해도 이어서 끝나도록 단계마다 이미 됐는지 본다.
+          # 태그는 올렸는데 Release 생성에서 실패했다면 Re-run 만으로 복구된다.
+          if gh release view "$tag" > /dev/null 2>&1; then
+            echo "$tag Release 가 이미 있다. 할 일 없음"
+            exit 0
           fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git tag -a "$tag" -m "$tag"
-          git push origin "$tag"
+          if git ls-remote --exit-code --tags origin "refs/tags/$tag" > /dev/null; then
+            echo "$tag 태그는 이미 있다. Release 만 만든다"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git tag -a "$tag" -m "$tag"
+            git push origin "$tag"
+          fi
           node scripts/release/notes.mjs "$version" > notes.md
           gh release create "$tag" --title "$tag" --notes-file notes.md --verify-tag

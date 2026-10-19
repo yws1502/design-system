@@ -23,6 +23,7 @@ export default {
         "gallery", // app/, components/playground/, 예제
         "docs", // README · AGENTS · specs
         "deps", // 의존성
+        "deps-dev", // 개발 의존성 (Dependabot 이 이 이름으로 쓴다)
         "repo", // 저장소 설정 · 도구
         "release", // 릴리스 커밋
       ],
