@@ -13,6 +13,7 @@ const VARIANTS = [
   "outline",
   "ghost",
   "destructive",
+  "destructive-soft",
   "link",
 ] as const;
 

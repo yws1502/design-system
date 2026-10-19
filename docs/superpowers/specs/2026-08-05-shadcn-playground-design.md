@@ -231,6 +231,7 @@ export const categories: Category[] = [ /* ... */ ]
 | `components/ui/sonner.tsx` | success·warning·error 아이콘에 대응 색 클래스 추가 | 두 구현의 상태 색을 일치시키기 위해서다 |
 | `components/ui/alert.tsx` | `warning` · `success` variant 추가 | 원본은 `default`와 `destructive`뿐이었다. destructive 정의를 그대로 미러링 |
 | `components/ui/badge.tsx` | `warning` · `success` variant 추가 | 위와 같음 |
+| `components/ui/button.tsx` | `destructive`를 Solid(`bg-destructive text-white`, dark `bg-destructive/60`)로 바꾸고, 기존 tint 모양을 `destructive-soft` variant로 옮김 | 원본 tint는 확인 다이얼로그 푸터에서 비활성처럼 보였다. 최종 확인은 Solid, 목록·진입점은 soft로 무게를 나눈다. Solid 기본값은 shadcn new-york 계열과 같지만 hover는 다르다 — 원본 `hover:bg-destructive/90`은 흰 바탕과 섞여 거의 안 보여서, light는 `color-mix(… black 10%)`, dark는 `/50`으로 어둡게 바꾼다(기본↔hover 명도 대비 약 1.25, hover 글자 대비 6.0 · 7.4). 1.5는 너무 세다는 판단 |
 | `app/globals.css` | `@layer base`에 `button` · `[role=button\|checkbox\|radio\|switch]`(`:disabled` · `aria-disabled` 제외) `cursor: pointer` 추가, `:where()`로 특이도 0 | Tailwind v4 preflight가 버튼의 pointer 커서를 뺐고 shadcn 컴포넌트도 `cursor-pointer`를 달지 않았다. Tailwind 권장 스니펫은 `button`만 잡는데, Base UI의 Checkbox·Radio·Switch는 role을 단 `<span>`이고 비활성도 `aria-disabled`로 표시해서 넓혔다 |
 
 **light 모드 토큰 명도는 실측으로 잡았다.** 처음 눈대중으로 넣은 값(success L 0.596 / warning L 0.646)은 destructive보다 밝아서 대비가 모자랐다 — Alert 제목 기준 success 3.65 / warning 3.35로, destructive 4.77과 WCAG AA 4.5 모두에 못 미쳤다. 브라우저에서 명도를 스캔해 destructive 이상이 되는 지점을 골랐다.

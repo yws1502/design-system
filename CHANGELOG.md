@@ -8,8 +8,14 @@
 
 ### 소비하는 쪽에 영향 있음
 
+#### Added
+
+- **Button `destructive-soft` variant.** 연한 빨강 배경에 빨강 글자로, 바뀌기 전 `destructive`의 모양 그대로다. 목록 행의 "제거"처럼 반복되는 자리나, 확인 다이얼로그를 여는 진입점에 쓴다.
+
 #### Changed
 
+- **Button `destructive`를 Solid로 변경.** 연한 tint였던 기존 모양은 확인 다이얼로그 푸터에서 비활성 버튼처럼 보였고, Disabled 상태와도 잘 구분되지 않았다. 이제 꽉 찬 빨강에 흰 글자다(대비 light 4.77 · dark 6.00, AA 통과). 다크 모드는 밝은 `--destructive` 위에 흰 글자가 묻히지 않도록 60% 농도로 깐다. Hover는 light·dark 모두 **더 어둡게** 바뀐다 — 흔한 `/90`은 흰 바탕에 섞여 거의 티가 나지 않았다(명도 대비 1.05 → 약 1.25).
+  - **소비하는 쪽이 할 일:** `variant="destructive"`를 쓰는 곳을 훑어본다. 최종 확인(다이얼로그의 "삭제" 등)은 그대로 두고, 목록 행·인라인 동작·다이얼로그를 여는 버튼처럼 한 화면에 여러 개 놓이는 자리는 `variant="destructive-soft"`로 바꾸면 이전 모양이 유지된다. 같은 화면에 Solid가 여러 개면 위험 신호가 무뎌진다.
 - **`ConfirmDeleteDialog`: 입력 중에는 "일치하지 않습니다"를 띄우지 않음.** 한 글자씩 칠 때마다 메시지가 나타났다 사라지면서 다이얼로그 높이가 바뀌고 삭제 버튼이 위아래로 움직였다. 아직 다 치지도 않았는데 틀렸다고 알리는 것도 문제였다. 이제 입력 중에는 삭제 버튼 비활성과 placeholder로만 안내하고, Enter로 확정하려 했는데 틀렸을 때만 입력칸을 오류로 표시하고 메시지를 보인다. 다시 입력하면 메시지는 사라진다. API 변화 없음, 소비하는 쪽은 할 일 없음.
 - **`ConfirmDeleteDialog`: 입력칸 placeholder에 확인 문자열을 표시.** 위의 안내 문장까지 눈을 옮기지 않아도 무엇을 입력해야 하는지 바로 보인다. 값을 채워 주는 것은 아니라서 직접 입력해야 하는 확인 절차는 그대로다. API 변화 없음, 소비하는 쪽은 할 일 없음.
 
@@ -20,6 +26,7 @@
 - 커밋 메시지 검사(husky + commitlint). `<type>(<scope>): <subject>` 형식과 scope를 강제한다. 이 레포에서 `pnpm install`할 때만 훅이 설치되므로 서브모듈로 가져다 쓰는 쪽에는 영향이 없다.
 - PR · 릴리스 자동화. `main`은 squash merge PR로만 바꾸고, PR 제목을 commitlint로 검사하고, 제목에서 버전 라벨(`major` · `minor` · `patch` · `no-release`)을 붙인다. `pnpm release`가 릴리스 PR을 만들고 머지되면 태그와 GitHub Release가 생긴다. 릴리스 노트는 이 CHANGELOG의 해당 절이다. 소비하는 쪽은 앞으로 GitHub Releases에서도 변경을 볼 수 있다.
 - 사이드바 제목 옆에 현재 버전(`package.json`의 `version`) 표시.
+- Form에 **Button — Destructive** 섹션 추가 — `destructive`(최종 확인)와 `destructive-soft`(목록·진입점)를 나란히 둔다. Button — Disabled에도 `destructive-soft` 추가. Confirm Delete 데모의 다이얼로그 진입 버튼은 `destructive-soft`로 바꿨다.
 
 #### Fixed
 
