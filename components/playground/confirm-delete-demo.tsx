@@ -16,7 +16,7 @@ function TriggerBased() {
         confirmValue="design-system 삭제"
         title="저장소를 삭제할까요?"
         description="저장소와 모든 이슈, 커밋 기록, 릴리스가 영구히 삭제됩니다."
-        trigger={<Button variant="destructive">저장소 삭제</Button>}
+        trigger={<Button variant="destructive-soft">저장소 삭제</Button>}
         onConfirm={() =>
           toast.add({
             type: "success",

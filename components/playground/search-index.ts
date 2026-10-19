@@ -34,6 +34,13 @@ export const searchIndex: SearchEntry[] = [
     "href": "/playground/form#button"
   },
   {
+    "key": "form#button-destructive",
+    "component": "Button — Destructive",
+    "example": null,
+    "category": "Form",
+    "href": "/playground/form#button-destructive"
+  },
+  {
     "key": "form#button-disabled",
     "component": "Button — Disabled",
     "example": null,
@@ -2489,6 +2496,20 @@ export const searchIndex: SearchEntry[] = [
     "example": "With Select",
     "category": "Navigation",
     "href": "/playground/navigation#pagination"
+  },
+  {
+    "key": "form#button-destructive::destructive — 최종 확인",
+    "component": "Button — Destructive",
+    "example": "destructive — 최종 확인",
+    "category": "Form",
+    "href": "/playground/form#button-destructive"
+  },
+  {
+    "key": "form#button-destructive::destructive-soft — 목록 · 진입점",
+    "component": "Button — Destructive",
+    "example": "destructive-soft — 목록 · 진입점",
+    "category": "Form",
+    "href": "/playground/form#button-destructive"
   },
   {
     "key": "form#button-disabled::Variants",

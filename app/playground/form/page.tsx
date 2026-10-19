@@ -10,6 +10,7 @@ import SwitchExample from "@/components/switch-example";
 import TextareaExample from "@/components/textarea-example";
 import ToggleExample from "@/components/toggle-example";
 import ToggleGroupExample from "@/components/toggle-group-example";
+import ButtonDestructiveDemo from "@/components/playground/button-destructive-demo";
 import ButtonDisabledDemo from "@/components/playground/button-disabled-demo";
 import SearchInputDemo from "@/components/playground/search-input-demo";
 import { Section } from "@/components/playground/section";
@@ -19,6 +20,13 @@ export default function FormPage() {
     <>
       <Section id="button" title="Button">
         <ButtonExample />
+      </Section>
+      <Section
+        id="button-destructive"
+        title="Button — Destructive"
+        description="최종 확인은 destructive(Solid), 목록·인라인처럼 반복되거나 확인 단계로 들어가는 진입점은 destructive-soft. 같은 화면에 Solid가 여러 개면 위험 신호가 무뎌진다."
+      >
+        <ButtonDestructiveDemo />
       </Section>
       <Section
         id="button-disabled"
