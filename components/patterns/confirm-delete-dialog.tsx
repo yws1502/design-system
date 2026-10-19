@@ -62,6 +62,8 @@ export function ConfirmDeleteDialog({
   const hintId = `${inputId}-hint`;
   const errorId = `${inputId}-error`;
   const [value, setValue] = React.useState("");
+  // Enter로 확정을 시도했는데 틀린 경우에만 true. 다시 입력하면 내린다.
+  const [attempted, setAttempted] = React.useState(false);
 
   // `AlertDialogAction`은 Close가 아니라 순수 Button이라 스스로 닫히지 않는다
   // (비동기 삭제를 고려한 의도적 설계). 그래서 확인 후 닫는 책임이 여기에 있고,
@@ -71,8 +73,11 @@ export function ConfirmDeleteDialog({
   const actualOpen = isControlled ? open : internalOpen;
 
   const matches = value.trim() === confirmValue;
-  // 아직 아무것도 안 친 상태를 오류로 표시하지 않는다. 틀린 값을 친 경우에만 알린다.
-  const invalid = value.length > 0 && !matches;
+  // 입력 중에는 오류를 띄우지 않는다. 한 글자씩 칠 때마다 "일치하지 않습니다"가
+  // 나타났다 사라지면 다이얼로그 높이가 바뀌면서 삭제 버튼이 위아래로 움직이고,
+  // 아직 다 치지도 않았는데 틀렸다고 말하게 된다. 입력 중에는 비활성 버튼과
+  // placeholder로 충분하고, Enter로 확정하려 했는데 틀렸을 때만 알린다.
+  const invalid = attempted && !matches;
 
   function setOpen(next: boolean) {
     if (!isControlled) {
@@ -82,12 +87,16 @@ export function ConfirmDeleteDialog({
     // 확인 절차가 무의미해진다.
     if (!next) {
       setValue("");
+      setAttempted(false);
     }
     onOpenChange?.(next);
   }
 
   function handleConfirm() {
-    if (!matches) return;
+    if (!matches) {
+      setAttempted(true);
+      return;
+    }
     onConfirm();
     setOpen(false);
   }
@@ -128,7 +137,10 @@ export function ConfirmDeleteDialog({
             aria-labelledby={hintId}
             aria-invalid={invalid || undefined}
             aria-describedby={invalid ? errorId : undefined}
-            onChange={(event) => setValue(event.target.value)}
+            onChange={(event) => {
+              setValue(event.target.value);
+              setAttempted(false);
+            }}
             onKeyDown={(event) => {
               if (event.key === "Enter") {
                 event.preventDefault();
