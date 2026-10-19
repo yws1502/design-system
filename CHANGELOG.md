@@ -6,6 +6,14 @@
 
 ## [Unreleased]
 
+### 갤러리 전용
+
+#### Added
+
+- 커밋 메시지 검사(husky + commitlint). `<type>(<scope>): <subject>` 형식과 scope를 강제한다. 이 레포에서 `pnpm install`할 때만 훅이 설치되므로 서브모듈로 가져다 쓰는 쪽에는 영향이 없다.
+- PR · 릴리스 자동화. `main`은 squash merge PR로만 바꾸고, PR 제목을 commitlint로 검사하고, 제목에서 버전 라벨(`major` · `minor` · `patch` · `no-release`)을 붙인다. `pnpm release`가 릴리스 PR을 만들고 머지되면 태그와 GitHub Release가 생긴다. 릴리스 노트는 이 CHANGELOG의 해당 절이다. 소비하는 쪽은 앞으로 GitHub Releases에서도 변경을 볼 수 있다.
+- 사이드바 제목 옆에 현재 버전(`package.json`의 `version`) 표시.
+
 ## [0.2.0] - 2026-10-20
 
 ### 소비하는 쪽에 영향 있음

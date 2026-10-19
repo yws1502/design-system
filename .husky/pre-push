@@ -1,0 +1,8 @@
+# main 은 PR 로만 바꾼다. private 저장소라 GitHub 브랜치 보호를 쓸 수 없어 로컬에서 막는다.
+# 정말 급하면 git push --no-verify
+while read -r _local_ref _local_sha remote_ref _remote_sha; do
+  if [ "$remote_ref" = "refs/heads/main" ]; then
+    echo "✖ main 에 직접 push 하지 않는다. 브랜치를 따서 PR 로 올린다."
+    exit 1
+  fi
+done

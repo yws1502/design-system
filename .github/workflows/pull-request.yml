@@ -1,0 +1,74 @@
+# PR 검사. squash merge 라 PR 제목이 그대로 main 의 커밋 메시지가 된다.
+# 로컬 husky 훅은 GitHub 에서 만든 커밋을 거치지 않으므로 여기서 같은 규칙으로 검사한다.
+name: Pull request
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  title:
+    name: PR title
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # commitlint.config.mjs 하나로 로컬 커밋과 PR 제목을 함께 검사한다
+      - name: commitlint
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: printf '%s\n' "$PR_TITLE" | pnpm exec commitlint --verbose
+
+  label:
+    name: Version label
+    needs: title
+    # 제목이 바뀔 때만 다시 붙인다. 손으로 바꾼 라벨을 커밋 push 마다 덮어쓰지 않는다.
+    if: github.event.action == 'opened' || github.event.action == 'reopened' || github.event.changes.title
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: apply
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          label=$(node scripts/release/label.mjs "$PR_TITLE")
+          stale=$(gh pr view "$PR" --json labels --jq \
+            "[.labels[].name | select(. == \"major\" or . == \"minor\" or . == \"patch\" or . == \"no-release\") | select(. != \"$label\")] | join(\",\")")
+          if [ -n "$stale" ]; then
+            gh pr edit "$PR" --add-label "$label" --remove-label "$stale"
+          else
+            gh pr edit "$PR" --add-label "$label"
+          fi
+          echo "label: $label" >> "$GITHUB_STEP_SUMMARY"
+
+  changelog:
+    name: Changelog
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: CHANGELOG.md 에 항목이 있는지
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ "$(node scripts/release/label.mjs --needs-changelog "$PR_TITLE")" != "true" ]; then
+            echo "scope 가 ui · patterns · tokens · gallery 가 아니라 건너뛴다"
+            exit 0
+          fi
+          if ! git diff --name-only "$BASE"...HEAD | grep -qx CHANGELOG.md; then
+            echo "::error::CHANGELOG.md 의 [Unreleased] 에 항목을 추가한다 (AGENTS.md 참조)"
+            exit 1
+          fi

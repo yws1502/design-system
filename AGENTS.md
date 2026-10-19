@@ -25,6 +25,17 @@ shadcn/ui(**Base UI**, `base-vega`) 컴포넌트를 담은 디자인 시스템�
 
 문서·주석만 고쳤거나 리팩터링으로 동작이 그대로면 남기지 않아도 된다.
 
+## 커밋 메시지
+
+`<type>(<scope>): <subject>` — 예: `feat(gallery): 사이드바 검색에 SearchInput 적용`. **type과 scope는 영어, subject는 한국어로 쓴다.** PR 제목도 같다. husky `commit-msg` 훅의 commitlint가 막는다(`commitlint.config.mjs`). 훅은 `pnpm install` 때 `prepare`로 설치된다.
+
+| | 값 |
+|---|---|
+| type | `feat` `fix` `style` `docs` `chore` `refactor` `revert` |
+| scope (필수) | `ui` `patterns` `tokens` — 소비하는 쪽에 영향 있음<br>`gallery` — 갤러리 전용<br>`docs` `deps` `repo` `release` |
+
+scope는 CHANGELOG의 "소비하는 쪽에 영향 있음" / "갤러리 전용" 구분과 맞춘다. 한 커밋에 두 쪽이 섞이면 나눠서 커밋한다.
+
 ## 버전 태그
 
 서브모듈로 쓰는 쪽은 커밋 SHA가 아니라 **태그에 고정**한다. 태그가 없으면 소비자는 `main`을 따라갈 수밖에 없고, 그러면 우리가 뭘 바꾸든 즉시 끌려간다.
@@ -41,20 +52,36 @@ shadcn/ui(**Base UI**, `base-vega`) 컴포넌트를 담은 디자인 시스템�
 
 ### 릴리스 절차
 
+손으로 태그를 만들지 않는다. `pnpm release`가 릴리스 PR을 만들고, 머지되면 `.github/workflows/release.yml`이 주석 태그와 GitHub Release를 만든다.
+
 ```bash
-# 1. CHANGELOG.md 의 [Unreleased] 를 [x.y.z] - YYYY-MM-DD 로 바꾸고
-#    새 [Unreleased] 를 위에 만든다. 하단 비교 링크도 갱신한다.
-# 2. 커밋
-git commit -m "chore: release vx.y.z"
-
-# 3. 주석 있는 태그 (경량 태그는 쓰지 않는다 — 작성자·날짜가 남지 않는다)
-git tag -a vx.y.z -m "vx.y.z"
-
-# 4. 커밋과 태그를 함께 밀어야 원격에 태그가 생긴다
-git push origin main --follow-tags
+git checkout main && git pull
+pnpm release --dry-run    # 버전 계산과 릴리스 노트만 미리 본다
+pnpm release              # release/vx.y.z 브랜치 · 커밋 · PR 생성
+gh pr merge --squash      # 머지 → 태그 vx.y.z + GitHub Release 자동 생성
 ```
 
-`git push`만 하면 **태그는 올라가지 않는다.** `--follow-tags`를 빠뜨리지 않는다.
+- **버전**은 마지막 태그 이후 머지된 PR의 버전 라벨 중 가장 큰 것으로 정한다. `pnpm release minor`처럼 직접 지정할 수도 있다.
+- **`package.json`의 `version`**은 릴리스 PR이 올린다. 갤러리 사이드바에 보이는 버전이 이 값이다.
+- **릴리스 노트**는 CHANGELOG의 해당 버전 절을 그대로 쓴다. 커밋 제목에서 만들지 않는다 — "왜"와 "소비하는 쪽이 할 일"은 커밋 제목에 없다.
+- 소비하는 쪽 영향이 없으면(`no-release`뿐이면) 스크립트가 거부한다.
+
+## PR
+
+`main`은 PR로만 바꾼다. private 저장소라 GitHub 브랜치 보호를 쓸 수 없어 husky `pre-push` 훅이 `main` 직접 push를 막는다(급할 때만 `--no-verify`).
+
+- **squash merge만** 허용한다. PR 제목이 곧 `main`의 커밋 메시지가 되고 GitHub가 끝에 `(#번호)`를 붙인다. 그래서 **PR 제목도 커밋 메시지 규칙을 따른다** — CI(`.github/workflows/pull-request.yml`)가 같은 commitlint 설정으로 검사한다.
+- **버전 라벨**은 PR 제목을 보고 CI가 붙인다. 규칙은 `scripts/release/lib.mjs`.
+
+| 제목 | 라벨 |
+|---|---|
+| `<type>(<scope>)!: …` | `major` |
+| `feat(ui\|patterns\|tokens): …` | `minor` |
+| 그 밖의 `(ui\|patterns\|tokens)` | `patch` |
+| `gallery` · `docs` · `deps` · `repo` · `release` | `no-release` |
+
+  라벨이 틀렸으면 손으로 바꾼다. 제목을 고칠 때만 다시 계산하므로 손으로 바꾼 라벨은 유지된다.
+- scope가 `ui` · `patterns` · `tokens` · `gallery`이면 CI가 **CHANGELOG.md 변경을 요구**한다.
 
 ## 서브모듈에서 이 레포를 고칠 때
 
