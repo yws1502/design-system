@@ -1,9 +1,8 @@
 /**
  * 커밋 메시지 형식: `<type>(<scope>): <subject>` — 예: `feat(gallery): ...`
  *
- * scope 는 CHANGELOG 의 구분과 맞춘다. ui · patterns · tokens 는 소비하는 쪽에
- * 영향이 있고, gallery 는 갤러리 전용이다. 나중에 릴리스 노트를 커밋에서 뽑을 때
- * 이 구분을 그대로 쓴다.
+ * scope 로 버전 라벨이 정해진다(scripts/release/lib.mjs). ui · patterns · tokens 는
+ * 소비하는 쪽에 영향이 있고, gallery 는 갤러리 전용이다.
  */
 export default {
   extends: ["@commitlint/config-conventional"],

@@ -12,18 +12,13 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 shadcn/ui(**Base UI**, `base-vega`) 컴포넌트를 담은 디자인 시스템이다. 다른 레포가 서브모듈로 **소스를 가져다 쓴다.** 개요는 `README.md`, 결정 근거는 `docs/superpowers/specs/`에 있다.
 
-## 변경사항은 CHANGELOG.md 에 남긴다
+## 변경 기록은 PR 제목과 본문이다
 
-이 레포는 다른 레포가 서브모듈로 소스를 가져다 쓴다. 소비하는 쪽은 **커밋 로그가 아니라 `CHANGELOG.md`를 보고** 무엇이 바뀌었는지 판단한다.
+이 레포는 다른 레포가 서브모듈로 소스를 가져다 쓴다. 소비하는 쪽은 **GitHub Releases(= `CHANGELOG.md`)**를 보고 무엇이 바뀌었는지 판단한다. 둘 다 릴리스할 때 머지된 PR 제목 목록으로 **자동 생성**되므로 손으로 쓰지 않는다.
 
-**코드를 바꿨으면 커밋 전에 `CHANGELOG.md`의 `[Unreleased]`에 항목을 추가한다.**
-
-- `components/ui/`, `components/patterns/`, 토큰(`app/globals.css`) 변경은 **"소비하는 쪽에 영향 있음"** 아래에 쓴다. 이쪽이 가장 중요하다.
-- 갤러리(`app/`, `components/playground/`, `scripts/`)만 바뀌었다면 **"갤러리 전용"** 아래에 쓴다.
-- `Added` / `Changed` / `Fixed` / `Removed`로 분류한다.
-- **무엇을 바꿨는지가 아니라 왜 바꿨는지, 그리고 소비하는 쪽이 무엇을 해야 하는지**를 쓴다. 파일명만 나열하면 커밋 로그와 다를 게 없다.
-
-문서·주석만 고쳤거나 리팩터링으로 동작이 그대로면 남기지 않아도 된다.
+- **PR 제목**이 릴리스 노트의 한 줄이다. 소비하는 쪽이 읽고 알아들을 수 있게 쓴다.
+- **PR 본문 "소비하는 쪽 영향 → 해야 할 일"**에 왜 바꿨는지와 소비하는 쪽이 할 일을 쓴다. 노트의 PR 링크를 따라와 여기서 읽는다. scope가 `ui` · `patterns` · `tokens`(또는 `!`)이면 CI가 비어 있는지 검사한다. 할 일이 없으면 "없음".
+- 노트의 묶음은 `.github/release.yml`, 다듬기는 `scripts/release/lib.mjs`의 `formatNotes`.
 
 ## 커밋 메시지
 
@@ -34,7 +29,7 @@ shadcn/ui(**Base UI**, `base-vega`) 컴포넌트를 담은 디자인 시스템�
 | type | `feat` `fix` `style` `docs` `chore` `refactor` `revert` |
 | scope (필수) | `ui` `patterns` `tokens` — 소비하는 쪽에 영향 있음<br>`gallery` — 갤러리 전용<br>`docs` `deps` `repo` `release` |
 
-scope는 CHANGELOG의 "소비하는 쪽에 영향 있음" / "갤러리 전용" 구분과 맞춘다. 한 커밋에 두 쪽이 섞이면 나눠서 커밋한다.
+scope로 버전 라벨이 정해지고 릴리스 노트의 묶음이 갈린다. 소비하는 쪽 변경과 갤러리 변경이 섞이면 PR을 나눈다.
 
 ## 버전 태그
 
@@ -63,7 +58,7 @@ gh pr merge --squash      # 머지 → 태그 vx.y.z + GitHub Release 자동 생
 
 - **버전**은 마지막 태그 이후 머지된 PR의 버전 라벨 중 가장 큰 것으로 정한다. `pnpm release minor`처럼 직접 지정할 수도 있다.
 - **`package.json`의 `version`**은 릴리스 PR이 올린다. 갤러리 사이드바에 보이는 버전이 이 값이다.
-- **릴리스 노트**는 CHANGELOG의 해당 버전 절을 그대로 쓴다. 커밋 제목에서 만들지 않는다 — "왜"와 "소비하는 쪽이 할 일"은 커밋 제목에 없다.
+- **릴리스 노트**는 GitHub이 머지된 PR 목록으로 만든다(`releases/generate-notes`). 릴리스 PR이 그 노트를 `CHANGELOG.md` 맨 위에 붙이고, 머지되면 같은 절이 GitHub Release 본문이 된다. 노트를 고치려면 릴리스 PR 브랜치의 `CHANGELOG.md`를 고친다(PR 본문은 미리보기일 뿐이다).
 - 소비하는 쪽 영향이 없으면(`no-release`뿐이면) 스크립트가 거부한다.
 
 ## PR
@@ -81,13 +76,13 @@ gh pr merge --squash      # 머지 → 태그 vx.y.z + GitHub Release 자동 생
 | `gallery` · `docs` · `deps` · `repo` · `release` | `no-release` |
 
   라벨이 틀렸으면 손으로 바꾼다. 제목을 고칠 때만 다시 계산하므로 손으로 바꾼 라벨은 유지된다.
-- scope가 `ui` · `patterns` · `tokens` · `gallery`이면 CI가 **CHANGELOG.md 변경을 요구**한다.
+- scope가 `ui` · `patterns` · `tokens`(또는 `!`)이면 CI가 **PR 본문 "해야 할 일"을 요구**한다.
 
 ## 서브모듈에서 이 레포를 고칠 때
 
 소비하는 앱에서 `vendor/design-system` 안으로 들어가 고치고 push하는 것은 **기술적으로 된다.** 서브모듈 디렉터리는 완전한 git 저장소이고, `.git`이 디렉터리 대신 `gitdir:` 파일인 것만 다르다.
 
-**하지만 기본적으로 하지 않는다.** 앱에서 `components/ui/`를 직접 고쳐 push하면 CHANGELOG·태그 규율을 통째로 우회한다. 다른 소비자는 무엇이 왜 바뀌었는지 알 수 없고, 태그에 고정한 쪽은 그 변경을 받지도 못한다. **이 레포에서 작업하고, 태그를 끊어 배포한다.**
+**하지만 기본적으로 하지 않는다.** 앱에서 `components/ui/`를 직접 고쳐 push하면 PR·릴리스 규율을 통째로 우회한다. 다른 소비자는 무엇이 왜 바뀌었는지 알 수 없고, 태그에 고정한 쪽은 그 변경을 받지도 못한다. **이 레포에서 작업하고, 태그를 끊어 배포한다.**
 
 앱 쪽에서 급히 고쳐야 한다면 브랜치를 따서 PR을 올린다. `main`에 직접 push하지 않는다.
 

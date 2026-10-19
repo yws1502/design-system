@@ -1,0 +1,20 @@
+# GitHub 자동 생성 릴리스 노트의 묶음. scripts/release/prepare.mjs 가 이 설정으로 노트를 만들어
+# CHANGELOG.md 에 붙이고, 같은 내용이 GitHub Release 본문이 된다.
+# 라벨은 PR 제목에서 CI 가 붙인다 (scripts/release/lib.mjs).
+changelog:
+  exclude:
+    labels:
+      - release
+  categories:
+    - title: Breaking changes
+      labels:
+        - major
+    - title: 기능 추가
+      labels:
+        - minor
+    - title: 수정
+      labels:
+        - patch
+    - title: 갤러리 · 기타
+      labels:
+        - "*"
