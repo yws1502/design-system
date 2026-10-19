@@ -11,7 +11,8 @@ permissions:
 jobs:
   release:
     # squash 커밋 제목: "chore(release): release v1.2.3 (#45)"
-    if: startsWith(github.event.head_commit.message, 'chore(release): release v')
+    # 문자열 안의 ": " 때문에 YAML 이 키로 읽지 않도록 통째로 따옴표로 감싼다
+    if: "startsWith(github.event.head_commit.message, 'chore(release): release v')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
