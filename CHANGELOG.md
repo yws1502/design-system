@@ -10,7 +10,7 @@
 
 #### Fixed
 
-- **`SearchInput`: 한글 조합 중 Esc가 검색어를 지우던 문제.** 조합 중의 Esc는 IME가 조합을 취소하는 키인데, `SearchInput`이 이를 지우기로 가로채서 입력 전체가 사라질 수 있었다. 조합 중(`isComposing` 또는 Safari의 `keyCode 229`)에는 Esc를 가로채지 않는다. 소비하는 쪽은 할 일 없음.
+- **`SearchInput`: 한글 조합 중 Esc를 누르면 확정된 글자가 지워지던 문제.** "한그"(그 조합 중)에서 Esc를 누르면 "그"만 남았다. `type="search"`에는 Esc로 값을 비우는 브라우저 기본 동작이 있어서, 확정된 "한"이 지워진 뒤 조합 중이던 "그"가 확정됐다. 이제 조합 중(`isComposing`, Safari는 `keyCode 229`)의 Esc는 기본 동작을 막고 바깥 `onKeyDown`에도 넘기지 않는다. Esc는 조합만 풀고 입력은 그대로 둔다. 소비하는 쪽은 할 일 없음.
 
 ### 갤러리 전용
 

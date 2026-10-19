@@ -91,11 +91,21 @@ export function SearchInput({
           onValueChange?.(event.target.value);
         }}
         onKeyDown={(event) => {
+          // 한글 조합 중의 Esc는 IME 몫이다. 지우지 않을 뿐 아니라 preventDefault도
+          // 해야 한다 — type="search"는 Esc로 값을 비우는 브라우저 기본 동작이 있어서,
+          // 그대로 두면 확정된 글자("한")만 지워지고 조합 중인 글자("그")가 남는다.
+          // 바깥 핸들러(Base UI Combobox 등)도 조합 중 Esc를 지우기로 처리하므로 넘기지 않는다.
+          // Safari는 조합 중 keydown에 isComposing 대신 keyCode 229만 준다.
+          if (event.nativeEvent.isComposing || event.keyCode === 229) {
+            if (event.key === "Escape") {
+              event.preventDefault();
+              return;
+            }
+            onKeyDown?.(event);
+            return;
+          }
           onKeyDown?.(event);
           if (event.defaultPrevented) return;
-          // 한글 조합 중의 Esc는 IME가 조합을 취소하는 키다. 여기서 지우면 입력 전체가
-          // 날아간다. Safari는 조합 중 keydown에 isComposing 대신 keyCode 229만 준다.
-          if (event.nativeEvent.isComposing || event.keyCode === 229) return;
           // 값이 있을 때만 가로챈다. 빈 상태의 Esc는 다이얼로그 닫기 등
           // 바깥 동작에 그대로 넘겨야 한다.
           if (event.key === "Escape" && current) {
