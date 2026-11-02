@@ -82,7 +82,7 @@ gh pr merge --squash      # 머지 → 태그 vx.y.z + GitHub Release 자동 생
 
 ## 의존성 · 보안
 
-- **Dependabot**(`.github/dependabot.yml`)이 매주 월요일 npm · GitHub Actions 업데이트 PR을 연다. minor · patch는 묶고 메이저는 하나씩 온다. 제목은 `chore(deps): …` · `chore(deps-dev): …`, 라벨은 `no-release`. 메이저(특히 `next` · `react` · `@base-ui/react` · `tailwindcss`)는 브라우저에서 확인한 뒤 머지한다.
+- **Dependabot**(`.github/dependabot.yml`)이 매주 월요일 npm · GitHub Actions 업데이트 PR을 연다. minor · patch는 묶고 메이저는 하나씩 온다. 제목은 `chore(deps): …` · `chore(deps-dev): …`, 라벨은 `no-release`. Dependabot이 `major` · `minor` 라벨을 함께 붙이지만 의존성 자체의 bump라서 `pnpm release`는 Dependabot PR의 라벨을 무시하고 제목으로 계산한다. 메이저(특히 `next` · `react` · `@base-ui/react` · `tailwindcss`)는 브라우저에서 확인한 뒤 머지한다.
 - **Dependabot 보안 알림 · 보안 업데이트**는 저장소 설정에서 켜 두었다.
 - **GitGuardian**(GitHub App)이 PR마다 비밀값 유출을 검사한다(`GitGuardian Security Checks`).
 

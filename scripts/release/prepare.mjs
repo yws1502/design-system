@@ -54,9 +54,15 @@ if (subjects.length === 0) fail(`${lastTag} 이후 커밋이 없다`);
 const rows = subjects.map((subject) => {
   const pr = /\(#(\d+)\)$/.exec(subject)?.[1];
   if (!pr) return { subject, label: labelForTitle(subject), from: "title" };
-  const labels = JSON.parse(
-    sh("gh", "pr", "view", pr, "--json", "labels", "--jq", "[.labels[].name]")
-  ).filter((name) => VERSION_LABELS.includes(name));
+  const { author, labels: prLabels } = JSON.parse(
+    sh("gh", "pr", "view", pr, "--json", "author,labels", "--jq", "{author: .author.login, labels: [.labels[].name]}")
+  );
+  // Dependabot 은 저장소에 major · minor · patch 라벨이 있으면 의존성 자체의 bump 크기로
+  // 그 라벨을 스스로 붙인다(no-release 와 함께). 우리 버전과 무관하므로 제목으로 계산한다.
+  if (author === "app/dependabot") {
+    return { subject, label: labelForTitle(subject), from: `#${pr} 제목` };
+  }
+  const labels = prLabels.filter((name) => VERSION_LABELS.includes(name));
   // 라벨이 없으면(워크플로 실패 등) 제목으로 대신한다
   return labels.length
     ? { subject, label: maxBump(labels), from: `#${pr}` }
