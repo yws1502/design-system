@@ -18,6 +18,10 @@ updates:
     labels:
       - no-release
       - dependencies
+    ignore:
+      # 타입은 런타임(CI · 로컬 Node 22)에 맞춘다. 메이저는 Node 를 올릴 때 함께 올린다.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
     groups:
       dependencies:
         dependency-type: production
