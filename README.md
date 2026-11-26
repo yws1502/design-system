@@ -4,6 +4,8 @@ shadcn/ui(Base UI) 컴포넌트 60개와 자체 조합 패턴을 담은 디자�
 
 `/playground`는 모든 컴포넌트와 공식 예제를 눈으로 검수하기 위한 갤러리다. 소비하는 쪽에서 가져갈 필요는 없다.
 
+**갤러리: https://yws1502.github.io/design-system/** — `main`에 머지될 때마다 `.github/workflows/pages.yml`이 정적 export로 다시 배포한다.
+
 ## 무엇을 가져가는가
 
 | 경로 | 내용 | 가져가나 |
