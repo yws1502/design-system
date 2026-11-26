@@ -8,10 +8,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# 쓰기 권한은 배포 job 에만 준다. 빌드(의존성 설치 · 스크립트 실행)는 읽기만.
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 # 연달아 머지되면 마지막 것만 배포한다. 진행 중인 배포는 끊지 않는다.
 concurrency:
@@ -39,6 +38,9 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
